@@ -2,18 +2,33 @@
 
 // Check if running in Vercel Serverless environment
 if (isset($_ENV['VERCEL']) || isset($_SERVER['VERCEL']) || isset($_ENV['NOW_REGION']) || isset($_SERVER['NOW_REGION'])) {
-    // 1. Redirect storage directory to /tmp/storage (writable)
+    // 1. Resolve environment variable references like ${VAR} in all string env variables
+    foreach (['_ENV', '_SERVER'] as $superglobal) {
+        foreach ($GLOBALS[$superglobal] as $key => $value) {
+            if (is_string($value) && strpos($value, '$') !== false) {
+                $GLOBALS[$superglobal][$key] = preg_replace_callback('/\$\{([^}]+)\}/', function($m) {
+                    $ref = $m[1];
+                    if (isset($_ENV[$ref])) return $_ENV[$ref];
+                    if (isset($_SERVER[$ref])) return $_SERVER[$ref];
+                    $val = getenv($ref);
+                    return $val !== false ? $val : $m[0];
+                }, $value);
+            }
+        }
+    }
+
+    // 2. Redirect storage directory to /tmp/storage (writable)
     $_ENV['LARAVEL_STORAGE_PATH'] = '/tmp/storage';
     $_SERVER['LARAVEL_STORAGE_PATH'] = '/tmp/storage';
 
-    // 2. Redirect all bootstrap cache to /tmp (writable)
+    // 3. Redirect all bootstrap cache to /tmp (writable)
     $_ENV['APP_SERVICES_CACHE'] = '/tmp/bootstrap_services.php';
     $_ENV['APP_PACKAGES_CACHE'] = '/tmp/bootstrap_packages.php';
     $_ENV['APP_CONFIG_CACHE'] = '/tmp/bootstrap_config.php';
     $_ENV['APP_ROUTES_CACHE'] = '/tmp/bootstrap_routes.php';
     $_ENV['APP_EVENTS_CACHE'] = '/tmp/bootstrap_events.php';
 
-    // 3. Make sure all necessary storage directories exist in /tmp
+    // 4. Make sure all necessary storage directories exist in /tmp
     $storageDirs = [
         '/tmp/storage',
         '/tmp/storage/app',
