@@ -96,7 +96,24 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'search_path' => 'public',
-            'sslmode' => env('DB_SSLMODE', 'require'),
+            'sslmode' => value(function() {
+                $url = env('DB_URL');
+                $host = env('DB_HOST', env('POSTGRES_HOST', '127.0.0.1'));
+                if (!empty($url)) {
+                    $parsed = parse_url($url);
+                    if ($parsed && isset($parsed['host'])) {
+                        $host = $parsed['host'];
+                    }
+                }
+                
+                $sslMode = env('DB_SSLMODE', 'require');
+                if (is_string($host) && strpos($host, 'neon.tech') !== false) {
+                    $parts = explode('.', $host);
+                    $endpointId = $parts[0];
+                    return "{$sslMode};options=endpoint%3D{$endpointId}";
+                }
+                return $sslMode;
+            }),
         ],
 
         'sqlsrv' => [
