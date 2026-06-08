@@ -943,4 +943,38 @@ Route::get('/api/users/{id}/stats', function ($id) {
     return response()->json(['status' => 'error', 'message' => 'Role tidak didukung.'], 400);
 });
 
+// GET SYSTEM ERROR LOGS (Admin Debugging)
+Route::get('/api/admin/logs', function () {
+    $logPath = storage_path('logs/laravel.log');
+    if (!file_exists($logPath)) {
+        return response()->json(['logs' => 'Tidak ada berkas log yang ditemukan.']);
+    }
+    
+    $fileSize = filesize($logPath);
+    if ($fileSize === 0) {
+        return response()->json(['logs' => 'Berkas log kosong (tidak ada error yang tercatat).']);
+    }
+
+    $file = new \SplFileObject($logPath, 'r');
+    $file->seek(PHP_INT_MAX);
+    $lastLine = $file->key();
+    
+    $lines = [];
+    $start = max(0, $lastLine - 300);
+    for ($i = $start; $i < $lastLine; $i++) {
+        $file->seek($i);
+        $lines[] = $file->current();
+    }
+    
+    // Kembalikan dengan urutan terbalik agar log terbaru berada di paling atas
+    return response()->json(['logs' => implode('', array_reverse($lines))]);
+});
+
+// CLEAR SYSTEM ERROR LOGS
+Route::post('/api/admin/logs/clear', function () {
+    $logPath = storage_path('logs/laravel.log');
+    file_put_contents($logPath, '');
+    return response()->json(['status' => 'success']);
+});
+
 

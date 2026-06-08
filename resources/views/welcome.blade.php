@@ -2540,6 +2540,10 @@
             Verifikasi Registrasi
             <span class="nav-badge" id="sidebarRegRequestsBadge" style="background:#F47B30; display:none;">0</span>
           </li>
+          <li onclick="showAdminSubTab('logs', this)">
+            <span class="nav-icon"><i class="bi bi-terminal-fill"></i></span>
+            Log &amp; Debugging
+          </li>
         </ul>
 
         <div class="admin-sidebar-footer px-3 w-100">
@@ -2768,6 +2772,31 @@
                   <!-- Loaded Dynamically via AJAX -->
                 </tbody>
               </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUB-TAB 5: LOG & DEBUGGING -->
+        <div class="admin-sub-page" id="adminSubLogs">
+          <div class="admin-page-header d-flex justify-content-between align-items-center flex-wrap g-3">
+            <div>
+              <h2><i class="bi bi-terminal-fill text-warning me-2"></i> Log Sistem &amp; Debugging</h2>
+              <p class="text-muted mb-0" style="font-size:0.9rem">Melihat catatan kesalahan (errors) dari berkas laravel.log secara langsung.</p>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-warning d-flex align-items-center gap-2 px-4 py-2.5 fw-bold text-white shadow-sm" onclick="clearLaravelLog()" style="border-radius: 30px; font-size: 0.85rem; border: none; background: #e74c3c; transition: all 0.3s ease;">
+                <i class="bi bi-trash3-fill"></i> Bersihkan Log
+              </button>
+              <button class="btn btn-success d-flex align-items-center gap-2 px-4 py-2.5 fw-bold text-white shadow-sm" onclick="loadSystemLogs()" style="border-radius: 30px; font-size: 0.85rem; border: none; background: var(--green); transition: all 0.3s ease;">
+                <i class="bi bi-arrow-clockwise"></i> Segarkan Log
+              </button>
+            </div>
+          </div>
+
+          <!-- LOG VIEW PANEL -->
+          <div class="custom-card p-4 mt-4 text-light font-monospace bg-dark" style="border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 10px 30px rgba(0,0,0,0.35);">
+            <div id="systemLogsContent" style="font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 0.82rem; white-space: pre-wrap; line-height: 1.6; max-height: 550px; overflow-y: auto; color: #E5E9F0; text-align: left; direction: ltr;">
+              Memuat catatan log sistem...
             </div>
           </div>
         </div>
@@ -5057,6 +5086,8 @@
         loadAdminPanel();
       } else if (subpageName === 'registrasi') {
         loadAdminRegistrationRequests();
+      } else if (subpageName === 'logs') {
+        loadSystemLogs();
       }
     }
 
@@ -5842,7 +5873,72 @@
       });
     }
 
-    // 13. Approve registration: generate credentials and open simulated email modal
+    // 13. Load system debugging logs from API
+    function loadSystemLogs() {
+      const container = document.getElementById('systemLogsContent');
+      if (!container) return;
+      
+      container.innerHTML = `<span class="text-warning"><i class="bi bi-arrow-repeat spin"></i> Menghubungi server, membaca berkas laravel.log...</span>`;
+      
+      fetch('/api/admin/logs')
+      .then(res => res.json())
+      .then(data => {
+        if (data.logs) {
+          // Highlight timestamps, ERROR, WARNING, and INFO
+          let formattedLogs = data.logs
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\]/g, '<span class="text-info">$&</span>')
+            .replace(/local\.ERROR/g, '<span class="text-danger fw-bold">$&</span>')
+            .replace(/local\.WARNING/g, '<span class="text-warning fw-bold">$&</span>')
+            .replace(/local\.INFO/g, '<span class="text-success fw-bold">$&</span>')
+            .replace(/Stack trace:/g, '<span class="text-secondary">$&</span>');
+            
+          container.innerHTML = formattedLogs;
+        } else {
+          container.innerHTML = '<span class="text-muted">Tidak ada catatan log saat ini.</span>';
+        }
+      })
+      .catch(err => {
+        container.innerHTML = '<span class="text-danger">Gagal mengambil catatan log dari server. Pastikan koneksi server menyala.</span>';
+        showCustomToast('Gagal Memuat Log', 'Gagal memuat log sistem dari API.', 'error');
+      });
+    }
+
+    // 14. Clear system logs
+    async function clearLaravelLog() {
+      const confirmed = await showCustomConfirm(
+        'Bersihkan Log Sistem',
+        'Apakah Anda yakin ingin menghapus seluruh isi file laravel.log? Tindakan ini tidak dapat dibatalkan.',
+        'bi-trash3-fill',
+        '#e74c3c'
+      );
+      
+      if (!confirmed) return;
+      
+      fetch('/api/admin/logs/clear', {
+        method: 'POST',
+        headers: {
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'success') {
+          showCustomToast('Log Dibersihkan', 'Isi berkas log laravel.log telah sukses dikosongkan.', 'success');
+          loadSystemLogs();
+        } else {
+          showCustomToast('Gagal Membersihkan Log', 'Respon server tidak valid.', 'error');
+        }
+      })
+      .catch(err => {
+        showCustomToast('Gagal Membersihkan Log', 'Koneksi ke server terputus.', 'error');
+      });
+    }
+
+    // 15. Approve registration: generate credentials and open simulated email modal
     async function processApproveRegistration(id) {
       const confirmed = await showCustomConfirm(
         'Setujui Pendaftaran',
