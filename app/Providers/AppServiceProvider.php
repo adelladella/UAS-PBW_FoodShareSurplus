@@ -45,7 +45,7 @@ class AppServiceProvider extends ServiceProvider
                     }
                 }
                 
-                // 2. Inject endpoint ID options with %3D URL-encoded format for PDO compatibility
+                // 2. Inject endpoint ID options with single quote format for PDO compatibility
                 $host = $config['host'] ?? '';
                 if (is_string($host) && strpos($host, 'neon.tech') !== false) {
                     $parts = explode('.', $host);
@@ -54,7 +54,7 @@ class AppServiceProvider extends ServiceProvider
                     $sslMode = $config['sslmode'] ?? 'require';
                     $sslMode = explode(';', $sslMode)[0]; // Remove any previously appended options
                     
-                    $config['sslmode'] = "{$sslMode};options=endpoint%3D{$endpointId}";
+                    $config['sslmode'] = "{$sslMode};options='endpoint={$endpointId}'";
                     
                     $this->app['config']->set("database.connections.{$name}", $config);
                 }
