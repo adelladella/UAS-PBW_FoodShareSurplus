@@ -62,6 +62,9 @@ $app = Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (\Throwable $e, \Illuminate\Http\Request $request) {
+            $config = config('database.connections.pgsql');
+            $configDump = var_export($config, true);
+
             // Jika request AJAX/API, kembalikan JSON
             if ($request->is('api/*') || $request->expectsJson()) {
                 http_response_code(500);
@@ -70,7 +73,8 @@ $app = Application::configure(basePath: dirname(__DIR__))
                     'status' => 'error',
                     'message' => $e->getMessage(),
                     'file' => $e->getFile() . ':' . $e->getLine(),
-                    'trace' => $e->getTraceAsString()
+                    'trace' => $e->getTraceAsString(),
+                    'config' => $config
                 ]);
                 exit;
             }
@@ -79,6 +83,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
             $file = htmlspecialchars($e->getFile(), ENT_QUOTES, 'UTF-8');
             $line = $e->getLine();
             $trace = htmlspecialchars($e->getTraceAsString(), ENT_QUOTES, 'UTF-8');
+            $configHtml = htmlspecialchars($configDump, ENT_QUOTES, 'UTF-8');
 
             $html = <<<HTML
 <!DOCTYPE html>
@@ -184,6 +189,10 @@ $app = Application::configure(basePath: dirname(__DIR__))
         <div class="p-3 bg-light rounded-3 border font-monospace text-muted" style="font-size: 0.85rem;">
           {$file} : Baris {$line}
         </div>
+      </div>
+      <div class="mb-4">
+        <h6 class="fw-bold text-dark mb-2">Database Connection Configuration (pgsql):</h6>
+        <pre class="p-3 bg-light rounded-3 border font-monospace text-muted" style="font-size: 0.85rem; white-space: pre-wrap;">{$configHtml}</pre>
       </div>
       <div class="mb-4">
         <h6 class="fw-bold text-dark mb-2">Catatan Log Stack Trace:</h6>
