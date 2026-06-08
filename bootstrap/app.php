@@ -230,12 +230,17 @@ HTML;
 
 // Neon Database SNI support for older postgres client libraries (libpq)
 $app->booting(function () use ($app) {
+    error_log("=== NEON DB BOOTING HOOK START ===");
     $connections = $app['config']->get('database.connections', []);
+    error_log("Found connections in config: " . implode(', ', array_keys($connections)));
     foreach ($connections as $name => $config) {
         if ($config && isset($config['driver']) && $config['driver'] === 'pgsql') {
+            error_log("Processing pgsql connection '{$name}'");
+            error_log("Original: " . json_encode($config));
             if (!empty($config['url'])) {
                 if (class_exists(\Illuminate\Database\ConfigurationUrlParser::class)) {
                     $config = (new \Illuminate\Database\ConfigurationUrlParser)->parseConfiguration($config);
+                    error_log("After URL parsing: " . json_encode($config));
                 }
             }
             
@@ -249,10 +254,12 @@ $app->booting(function () use ($app) {
                     $config['sslmode'] = "{$sslMode};options='endpoint={$endpointId}'";
                 }
                 
+                error_log("Modified '{$name}' config: " . json_encode($config));
                 $app['config']->set("database.connections.{$name}", $config);
             }
         }
     }
+    error_log("=== NEON DB BOOTING HOOK END ===");
 });
 
 return $app;
