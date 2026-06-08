@@ -230,36 +230,54 @@ HTML;
 
 // Neon Database SNI support for older postgres client libraries (libpq)
 $app->booting(function () use ($app) {
-    error_log("=== NEON DB BOOTING HOOK START ===");
     $connections = $app['config']->get('database.connections', []);
-    error_log("Found connections in config: " . implode(', ', array_keys($connections)));
     foreach ($connections as $name => $config) {
         if ($config && isset($config['driver']) && $config['driver'] === 'pgsql') {
-            error_log("Processing pgsql connection '{$name}'");
-            error_log("Original: " . json_encode($config));
+            // 1. Parse connection URL manually to ensure full compatibility without framework dependencies
             if (!empty($config['url'])) {
-                if (class_exists(\Illuminate\Database\ConfigurationUrlParser::class)) {
-                    $config = (new \Illuminate\Database\ConfigurationUrlParser)->parseConfiguration($config);
-                    error_log("After URL parsing: " . json_encode($config));
+                $parsedUrl = parse_url($config['url']);
+                if ($parsedUrl) {
+                    if (isset($parsedUrl['host'])) {
+                        $config['host'] = $parsedUrl['host'];
+                    }
+                    if (isset($parsedUrl['port'])) {
+                        $config['port'] = $parsedUrl['port'];
+                    }
+                    if (isset($parsedUrl['user'])) {
+                        $config['username'] = $parsedUrl['user'];
+                    }
+                    if (isset($parsedUrl['pass'])) {
+                        $config['password'] = $parsedUrl['pass'];
+                    }
+                    if (isset($parsedUrl['path'])) {
+                        $config['database'] = ltrim($parsedUrl['path'], '/');
+                    }
+                    if (isset($parsedUrl['query'])) {
+                        parse_str($parsedUrl['query'], $queryOpts);
+                        if (isset($queryOpts['sslmode'])) {
+                            $config['sslmode'] = $queryOpts['sslmode'];
+                        }
+                    }
+                    // Remove url key to prevent Laravel from parsing it again
+                    unset($config['url']);
                 }
             }
             
+            // 2. Inject endpoint ID options with %3D URL-encoded format for PDO compatibility
             $host = $config['host'] ?? '';
             if (is_string($host) && strpos($host, 'neon.tech') !== false) {
                 $parts = explode('.', $host);
                 $endpointId = $parts[0];
                 
                 $sslMode = $config['sslmode'] ?? 'require';
-                if (strpos($sslMode, 'options=') === false) {
-                    $config['sslmode'] = "{$sslMode};options='endpoint={$endpointId}'";
-                }
+                $sslMode = explode(';', $sslMode)[0]; // Remove any previously appended options
                 
-                error_log("Modified '{$name}' config: " . json_encode($config));
+                $config['sslmode'] = "{$sslMode};options=endpoint%3D{$endpointId}";
+                
                 $app['config']->set("database.connections.{$name}", $config);
             }
         }
     }
-    error_log("=== NEON DB BOOTING HOOK END ===");
 });
 
 return $app;
