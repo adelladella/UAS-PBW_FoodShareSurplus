@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoodShare — Distribusi Surplus Makanan</title>
+  <meta name="description" content="Platform modern distribusi surplus makanan untuk mengurangi food waste demi aksi sosial kemanusiaan.">
+  
+  <!-- CSS Frameworks & Google Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+    <link rel="stylesheet" href="../css/concept.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+  <nav class="custom-navbar d-flex justify-content-between align-items-center">
+    <a href="#" class="brand-logo" onclick="window.location.href='../home.html'">🍞 <span>FoodShare</span></a>
+    
+    <div class="tabs-wrapper">
+      <button class="tab-trigger active" onclick="window.location.href='../home.html'">Beranda</button>
+      <button class="tab-trigger" onclick="window.location.href='../user/donor.html'">Mitra Donor</button>
+      <button class="tab-trigger" onclick="window.location.href='../user/catalog.html'">Katalog</button>
+      <button class="tab-trigger" onclick="window.location.href='../user/claim.html'">Klaim &amp; Tracking</button>
+      <button class="tab-trigger" onclick="window.location.href='../api-docs.html'">API Docs</button>
+      <button class="tab-trigger" onclick="window.location.href='../admin/dashboard.html'">Admin Panel</button>
+    </div>
+    
+    <div class="d-none d-lg-block">
+      <button class="btn-honey" onclick="window.location.href='../user/catalog.html'">Selamatkan Makanan 🥐</button>
+    </div>
+  </nav>
+
+  
+
+<!-- TAB 6: ADMIN PANEL -->
+  <div class="page-section active" id="page-admin">
+    <div class="admin-container">
+      
+      <div class="d-flex justify-content-between align-items-center mb-5 flex-wrap gap-3">
+        <div>
+          <h2 class="fw-bold m-0">🛡️ Super Admin Control Panel</h2>
+          <p class="text-muted m-0">Validasi klaim, pengelolaan mitra donor, dan analitik distribusi zero-waste</p>
+        </div>
+        <div class="user-profile-badge">
+          <div class="user-avatar-sm" style="background-color: var(--accent2);">A</div>
+          <div>
+            <div class="fw-bold" style="font-size:0.85rem">Administrator</div>
+            <small class="text-muted" style="font-size:0.75rem">Level: Super Admin</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="admin-stats-grid">
+        <div class="stat-box">
+          <div class="stat-icon-wrapper orange">🍽️</div>
+          <div class="stat-num-val" id="adminStatPorsi">247</div>
+          <div class="stat-lbl">Total Porsi Diselamatkan</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-icon-wrapper green">🏪</div>
+          <div class="stat-num-val">12</div>
+          <div class="stat-lbl">Mitra Donor Aktif</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-icon-wrapper blue">🏛️</div>
+          <div class="stat-num-val">8</div>
+          <div class="stat-lbl">Lembaga Terdaftar</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-icon-wrapper gold">⏳</div>
+          <div class="stat-num-val" id="adminStatPending">3</div>
+          <div class="stat-lbl">Klaim Pending</div>
+        </div>
+      </div>
+
+      <!-- Validation Table -->
+      <div class="custom-card p-0 overflow-hidden">
+        <div class="p-4 border-bottom d-flex justify-content-between align-items-center bg-white">
+          <h5 class="fw-bold m-0">Validasi Pengajuan Klaim Pending</h5>
+          <span class="badge-status" style="background:#FFF3D6; color:#E6A817;" id="validationPendingBadge">3 Menunggu Validasi</span>
+        </div>
+        <div class="table-responsive">
+          <table class="donations-table text-start" style="width:100%;">
+            <thead>
+              <tr>
+                <th>ID Klaim</th>
+                <th>Makanan / Sumber</th>
+                <th>Pemohon Klaim</th>
+                <th>Jumlah Porsi</th>
+                <th>Status</th>
+                <th class="text-center">Aksi / Tindakan</th>
+              </tr>
+            </thead>
+            <tbody id="adminValidationTable">
+              
+              <!-- Row 1 -->
+              <tr>
+                <td>#KL-001</td>
+                <td>
+                  <strong>🍱 Nasi Box Ayam Goreng</strong><br>
+                  <small class="text-muted">Restoran Sederhana</small>
+                </td>
+                <td>
+                  <strong>Yayasan Peduli Sesama</strong><br>
+                  <small class="text-muted">lembaga_id: 3</small>
+                </td>
+                <td>15 Porsi</td>
+                <td><span class="badge-status" style="background:#FFF3D6; color:#E6A817;">Pending</span></td>
+                <td class="text-center">
+                  <div class="d-flex gap-2 justify-content-center">
+                    <button class="btn-sage" onclick="processValidationRow(this, 'approved', 15)">✓ Setujui</button>
+                    <button class="btn-danger-custom" onclick="processValidationRow(this, 'rejected', 0)">✗ Tolak</button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Row 2 -->
+              <tr>
+                <td>#KL-002</td>
+                <td>
+                  <strong>🍞 Roti Tawar &amp; Selai</strong><br>
+                  <small class="text-muted">Restoran Sederhana</small>
+                </td>
+                <td>
+                  <strong>Panti Asuhan Harapan Bangsa</strong><br>
+                  <small class="text-muted">lembaga_id: 4</small>
+                </td>
+                <td>20 Bungkus</td>
+                <td><span class="badge-status" style="background:#FFF3D6; color:#E6A817;">Pending</span></td>
+                <td class="text-center">
+                  <div class="d-flex gap-2 justify-content-center">
+                    <button class="btn-sage" onclick="processValidationRow(this, 'approved', 20)">✓ Setujui</button>
+                    <button class="btn-danger-custom" onclick="processValidationRow(this, 'rejected', 0)">✗ Tolak</button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Row 3 -->
+              <tr>
+                <td>#KL-003</td>
+                <td>
+                  <strong>🧃 Es Teh &amp; Jus Kemasan</strong><br>
+                  <small class="text-muted">Restoran Sederhana</small>
+                </td>
+                <td>
+                  <strong>Komunitas Berbagi Samarinda</strong><br>
+                  <small class="text-muted">lembaga_id: 5</small>
+                </td>
+                <td>10 Botol</td>
+                <td><span class="badge-status" style="background:#FFF3D6; color:#E6A817;">Pending</span></td>
+                <td class="text-center">
+                  <div class="d-flex gap-2 justify-content-center">
+                    <button class="btn-sage" onclick="processValidationRow(this, 'approved', 10)">✓ Setujui</button>
+                    <button class="btn-danger-custom" onclick="processValidationRow(this, 'rejected', 0)">✗ Tolak</button>
+                  </div>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  
+
+  <!-- Modals -->
+  <!-- Modals from original are kept here for simplicity, but we can append them if needed -->
+
+  <script src="../js/concept.js"></script>
+</body>
+</html>

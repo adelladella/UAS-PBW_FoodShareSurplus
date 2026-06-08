@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoodShare — Distribusi Surplus Makanan</title>
+  <meta name="description" content="Platform modern distribusi surplus makanan untuk mengurangi food waste demi aksi sosial kemanusiaan.">
+  
+  <!-- CSS Frameworks & Google Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+    <link rel="stylesheet" href="css/concept.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+  <nav class="custom-navbar d-flex justify-content-between align-items-center">
+    <a href="#" class="brand-logo" onclick="window.location.href='home.html'">🍞 <span>FoodShare</span></a>
+    
+    <div class="tabs-wrapper">
+      <button class="tab-trigger active" onclick="window.location.href='home.html'">Beranda</button>
+      <button class="tab-trigger" onclick="window.location.href='user/donor.html'">Mitra Donor</button>
+      <button class="tab-trigger" onclick="window.location.href='user/catalog.html'">Katalog</button>
+      <button class="tab-trigger" onclick="window.location.href='user/claim.html'">Klaim &amp; Tracking</button>
+      <button class="tab-trigger" onclick="window.location.href='api-docs.html'">API Docs</button>
+      <button class="tab-trigger" onclick="window.location.href='admin/dashboard.html'">Admin Panel</button>
+    </div>
+    
+    <div class="d-none d-lg-block">
+      <button class="btn-honey" onclick="window.location.href='user/catalog.html'">Selamatkan Makanan 🥐</button>
+    </div>
+  </nav>
+
+  
+
+<!-- TAB 1: LANDING PAGE -->
+  <div class="page-section active" id="page-landing">
+    <div class="container-fluid max-width-lg">
+      
+      <!-- Hero Banner -->
+      <div class="row hero-container">
+        <div class="col-lg-6 pr-lg-5">
+          <div style="display:inline-block;background:var(--green-light);color:var(--green);padding:8px 18px;border-radius:40px;font-size:.85rem;font-weight:700;margin-bottom:20px;letter-spacing:0.5px">🌱 ZERO FOOD WASTE MOVEMENT</div>
+          <h1 class="hero-title">Jangan Biarkan Makanan Baik Terbuang Sia-Sia.</h1>
+          <p class="hero-sub">Hubungkan surplus makanan berkualitas tinggi dari restoran &amp; bakery premium ke panti asuhan, lembaga sosial, serta komunitas yang membutuhkan. Bersama kita selamatkan hidangan lezat dan kurangi limbah bumi.</p>
+          <div class="d-flex gap-3">
+            <button class="btn-honey px-5 py-3" onclick="showTab('catalog')">Jelajahi Makanan Tersedia</button>
+            <button class="btn-honey-outline px-4" onclick="showTab('donor')">Gabung Jadi Mitra</button>
+          </div>
+          
+          <div class="row mt-5">
+            <div class="col-4 border-end">
+              <h3 class="fw-extrabold mb-0" style="color:var(--accent2)">247+</h3>
+              <small class="text-muted fw-semibold">Porsi Terselamatkan</small>
+            </div>
+            <div class="col-4 border-end">
+              <h3 class="fw-extrabold mb-0" style="color:var(--green)">12</h3>
+              <small class="text-muted fw-semibold">Mitra Donor</small>
+            </div>
+            <div class="col-4">
+              <h3 class="fw-extrabold mb-0" style="color:var(--dark)">8</h3>
+              <small class="text-muted fw-semibold">Lembaga Terdaftar</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 hero-visual-wrapper mt-5 mt-lg-0">
+          <div class="floating-accent-1"></div>
+          <div class="floating-accent-2"></div>
+          <img src="hero_food.png" alt="Visual Makanan Bakery Premium" class="hero-visual">
+        </div>
+      </div>
+
+      <!-- Section Cara Kerja -->
+      <div class="steps-section">
+        <div class="text-center mb-5">
+          <h2 class="fw-bold" style="font-size: 2rem;">Langkah Penyelamatan Makanan 🌿</h2>
+          <p class="text-muted">Prosedur berbagi makanan surplus yang mudah dan 100% transparan</p>
+        </div>
+        <div class="row g-4 max-width-md mx-auto">
+          <div class="col-md-3">
+            <div class="step-box">
+              <div class="step-badge">1</div>
+              <h4>Donor Input Data</h4>
+              <p>Restoran/bakery memasukkan data makanan layak yang berlebih.</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="step-box">
+              <div class="step-badge">2</div>
+              <h4>Real-Time Claim</h4>
+              <p>Lembaga sosial mengklaim makanan langsung dari sistem katalog.</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="step-box">
+              <div class="step-badge">3</div>
+              <h4>Distribusi</h4>
+              <p>Relawan sigap mengantarkan atau lembaga melakukan pickup langsung.</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="step-box">
+              <div class="step-badge">4</div>
+              <h4>Limbah Berkurang</h4>
+              <p>Makanan lezat terselamatkan dan dinikmati oleh yang berhak.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Stock Mini Section -->
+      <div class="mini-live-stock">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+          <div>
+            <h2 class="fw-bold m-0" style="font-size: 1.8rem;">📦 Live Inventory Makanan</h2>
+            <p class="text-muted m-0">Persediaan real-time saat ini dari seluruh mitra donor Balikpapan</p>
+          </div>
+          <button class="btn-honey-outline" onclick="showTab('catalog')">Lihat Semua</button>
+        </div>
+        
+        <div class="row g-4">
+          <div class="col-lg-4 col-md-6">
+            <div class="live-stock-item">
+              <div class="stock-emoji">🍱</div>
+              <div class="stock-details">
+                <h5>Nasi Box Ayam Goreng</h5>
+                <p>Restoran Sederhana • 30 porsi</p>
+              </div>
+              <span class="badge-status available">Tersedia</span>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="live-stock-item">
+              <div class="stock-emoji">🍞</div>
+              <div class="stock-details">
+                <h5>Roti Tawar &amp; Selai</h5>
+                <p>Restoran Sederhana • 50 bungkus</p>
+              </div>
+              <span class="badge-status available">Tersedia</span>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="live-stock-item">
+              <div class="stock-emoji">🧃</div>
+              <div class="stock-details">
+                <h5>Es Teh &amp; Jus Kemasan</h5>
+                <p>Restoran Sederhana • 40 botol</p>
+              </div>
+              <span class="badge-status available">Tersedia</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  
+
+  <!-- Modals -->
+  <!-- Modals from original are kept here for simplicity, but we can append them if needed -->
+
+  <script src="js/concept.js"></script>
+</body>
+</html>

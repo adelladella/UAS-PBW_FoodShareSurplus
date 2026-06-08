@@ -1,0 +1,3349 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoodShare — Distribusi Surplus Makanan | All Pages Concept</title>
+  <meta name="description" content="Platform modern distribusi surplus makanan untuk mengurangi food waste demi aksi sosial kemanusiaan di Balikpapan.">
+
+  <!-- CSS Frameworks & Google Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    /* ========================================
+       DESIGN SYSTEM & VARIABLES
+    ======================================== */
+    :root {
+      --bg: #FAF7EB;
+      --bg-warm: #FFFDF6;
+      --dark: #382615;
+      --dark-muted: #6B523B;
+      --accent: #EECB88;
+      --accent2: #F47B30;
+      --accent-grad: linear-gradient(135deg, #EECB88 0%, #F47B30 100%);
+      --accent-grad-hover: linear-gradient(135deg, #F47B30 0%, #D65A18 100%);
+      --green: #1E7D5C;
+      --green-light: #E0F5EA;
+      --honey-soft: rgba(238, 203, 136, 0.12);
+      --shadow-soft: 0 10px 30px rgba(56, 38, 21, 0.05);
+      --shadow-deep: 0 20px 40px rgba(56, 38, 21, 0.09);
+      --radius-sm: 12px;
+      --radius-md: 18px;
+      --radius-lg: 28px;
+      --transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    /* ========================================
+       GLOBAL STYLES
+    ======================================== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg);
+      background-image: radial-gradient(circle at 10% 20%, rgba(238, 203, 136, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, rgba(30, 125, 92, 0.05) 0%, transparent 45%);
+      color: var(--dark);
+      overflow-x: hidden;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ========================================
+       CUSTOM NAVBAR
+    ======================================== */
+    .custom-navbar {
+      background: rgba(250, 247, 235, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(56, 38, 21, 0.08);
+      padding: 14px 40px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      transition: var(--transition);
+    }
+    .brand-logo {
+      font-weight: 800; font-size: 1.6rem; letter-spacing: -0.5px;
+      display: flex; align-items: center; gap: 8px;
+      text-decoration: none; color: var(--dark); cursor: pointer;
+    }
+    .brand-logo span {
+      background: var(--accent-grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .tabs-wrapper {
+      background: rgba(56, 38, 21, 0.05);
+      border-radius: 40px; padding: 4px; display: flex; gap: 2px;
+    }
+    .tab-trigger {
+      border: none; background: transparent;
+      padding: 10px 20px; border-radius: 40px;
+      font-weight: 600; font-size: 0.85rem;
+      color: var(--dark); opacity: 0.7;
+      transition: var(--transition); cursor: pointer;
+      font-family: inherit; white-space: nowrap;
+    }
+    .tab-trigger:hover { opacity: 1; background: rgba(238, 203, 136, 0.2); }
+    .tab-trigger.active {
+      background: var(--accent-grad);
+      color: #FFFDF6; opacity: 1;
+      box-shadow: 0 4px 15px rgba(244, 123, 48, 0.25);
+    }
+
+    /* ========================================
+       CORE PAGE LAYOUT
+    ======================================== */
+    .page-section {
+      display: none;
+      animation: tabFadeIn 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+      min-height: calc(100vh - 80px);
+    }
+    .page-section.active { display: block; }
+    @keyframes tabFadeIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ========================================
+       PREMIUM BUTTONS
+    ======================================== */
+    .btn-honey {
+      background: var(--accent-grad); color: #FFFDF6; border: none;
+      border-radius: 30px; padding: 12px 28px; font-weight: 700;
+      font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 6px 18px rgba(244, 123, 48, 0.2);
+      transition: var(--transition); cursor: pointer; font-family: inherit;
+    }
+    .btn-honey:hover {
+      background: var(--accent-grad-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(244, 123, 48, 0.35);
+      color: #FFFDF6;
+    }
+    .btn-honey-outline {
+      background: transparent; border: 2px solid var(--accent);
+      color: var(--dark); border-radius: 30px; padding: 10px 24px;
+      font-weight: 600; font-size: 0.95rem;
+      transition: var(--transition); cursor: pointer; font-family: inherit;
+    }
+    .btn-honey-outline:hover {
+      background: var(--accent-grad);
+      border-color: transparent; color: #FFFDF6;
+      transform: translateY(-2px);
+    }
+    .btn-sage {
+      background: var(--green); color: #FFFDF6; border: none;
+      border-radius: 30px; padding: 10px 24px;
+      font-weight: 600; font-size: 0.9rem;
+      transition: var(--transition); cursor: pointer; font-family: inherit;
+    }
+    .btn-sage:hover {
+      background: #155B42;
+      box-shadow: 0 6px 16px rgba(30, 125, 92, 0.25);
+      transform: translateY(-1px);
+    }
+    .btn-danger-custom {
+      background: #E74C3C; color: #FFFDF6; border: none;
+      border-radius: 30px; padding: 10px 24px;
+      font-weight: 600; font-size: 0.9rem;
+      transition: var(--transition); cursor: pointer; font-family: inherit;
+    }
+    .btn-danger-custom:hover {
+      background: #C0392B;
+      box-shadow: 0 6px 16px rgba(231, 76, 60, 0.25);
+      transform: translateY(-1px);
+    }
+    .btn-danger-pastel {
+      background: #FDECEA; color: #C0392B; border: 1.5px solid #F5C6CB;
+      border-radius: 30px; padding: 8px 18px;
+      font-weight: 600; font-size: 0.85rem;
+      transition: var(--transition); cursor: pointer; font-family: inherit;
+    }
+    .btn-danger-pastel:hover {
+      background: #E74C3C; color: #fff; border-color: #E74C3C;
+      transform: translateY(-1px);
+    }
+    .btn-info-pastel {
+      background: #E8F0FE; color: #1967D2; border: 1.5px solid #C4D7F5;
+      border-radius: 30px; padding: 8px 18px;
+      font-weight: 600; font-size: 0.85rem;
+      transition: var(--transition); cursor: pointer; font-family: inherit;
+    }
+    .btn-info-pastel:hover {
+      background: #1967D2; color: #fff; border-color: #1967D2;
+      transform: translateY(-1px);
+    }
+    .btn-edit-pastel {
+      background: #FFF3D6; color: #B8860B; border: 1.5px solid #F0D89A;
+      border-radius: 30px; padding: 8px 18px;
+      font-weight: 600; font-size: 0.85rem;
+      transition: var(--transition); cursor: pointer; font-family: inherit;
+    }
+    .btn-edit-pastel:hover {
+      background: #E6A817; color: #fff; border-color: #E6A817;
+      transform: translateY(-1px);
+    }
+
+    /* ========================================
+       PREMIUM CARDS
+    ======================================== */
+    .custom-card {
+      background: var(--bg-warm);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(56, 38, 21, 0.04);
+      padding: 30px;
+      transition: var(--transition);
+    }
+    .custom-card:hover {
+      box-shadow: var(--shadow-deep);
+      transform: translateY(-5px);
+    }
+
+    /* ========================================
+       TAB 1: HERO & HOME
+    ======================================== */
+    .hero-container { padding: 80px 40px; align-items: center; }
+    .hero-title {
+      font-size: 3.4rem; font-weight: 800; line-height: 1.25;
+      color: var(--dark); margin-bottom: 20px;
+    }
+    .hero-sub {
+      font-size: 1.15rem; line-height: 1.8;
+      color: var(--dark-muted); margin-bottom: 35px;
+    }
+    .hero-visual-wrapper { position: relative; text-align: center; }
+    .hero-visual {
+      max-width: 75%; margin: 0 auto; display: block;
+      border-radius: var(--radius-lg);
+      filter: drop-shadow(0 15px 35px rgba(56, 38, 21, 0.12));
+      animation: floatGraphic 5s ease-in-out infinite;
+    }
+    @keyframes floatGraphic {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(1.5deg); }
+    }
+    .floating-accent-1 {
+      position: absolute; width: 120px; height: 120px;
+      background: radial-gradient(circle, rgba(238, 203, 136, 0.4) 0%, transparent 70%);
+      top: -20px; right: 10%; z-index: -1;
+      animation: pulseGlow 4s infinite alternate;
+    }
+    .floating-accent-2 {
+      position: absolute; width: 160px; height: 160px;
+      background: radial-gradient(circle, rgba(244, 123, 48, 0.15) 0%, transparent 70%);
+      bottom: -30px; left: 10%; z-index: -1;
+      animation: pulseGlow 5s infinite alternate-reverse;
+    }
+    @keyframes pulseGlow {
+      0% { transform: scale(0.9); opacity: 0.5; }
+      100% { transform: scale(1.1); opacity: 1; }
+    }
+
+    /* STEP CARDS */
+    .steps-section {
+      padding: 80px 40px;
+      background: var(--bg-warm);
+      border-top: 1px solid rgba(56, 38, 21, 0.05);
+      border-bottom: 1px solid rgba(56, 38, 21, 0.05);
+    }
+    .step-box {
+      background: #FFFFFF; border-radius: var(--radius-md);
+      padding: 35px 25px; text-align: center;
+      border: 1px solid rgba(56, 38, 21, 0.03);
+      box-shadow: 0 4px 20px rgba(56, 38, 21, 0.02);
+      transition: var(--transition); height: 100%;
+    }
+    .step-box:hover {
+      transform: translateY(-8px); box-shadow: var(--shadow-deep);
+      border-color: rgba(238, 203, 136, 0.3);
+    }
+    .step-badge {
+      width: 50px; height: 50px; border-radius: 50%;
+      background: var(--accent-grad); color: #FFFDF6;
+      font-weight: 800; font-size: 1.25rem;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 4px 12px rgba(244, 123, 48, 0.2);
+    }
+    .step-box h4 { font-weight: 700; font-size: 1.15rem; margin-bottom: 10px; color: var(--dark); }
+    .step-box p { font-size: 0.9rem; color: var(--dark-muted); line-height: 1.6; margin-bottom: 0; }
+
+    /* MINI LIVE STOCK */
+    .mini-live-stock { padding: 80px 40px; }
+    .live-stock-item {
+      background: #FFFFFF; border-radius: var(--radius-sm);
+      padding: 22px 26px; display: flex; align-items: center; gap: 20px;
+      border: 1px solid rgba(56, 38, 21, 0.04);
+      box-shadow: var(--shadow-soft); transition: var(--transition); height: 100%;
+    }
+    .live-stock-item:hover {
+      transform: translateY(-4px); box-shadow: var(--shadow-deep);
+      border-color: rgba(30, 125, 92, 0.2);
+    }
+    .stock-emoji {
+      font-size: 2.2rem; background: var(--honey-soft);
+      width: 64px; height: 64px; border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .stock-details h5 { font-weight: 700; font-size: 1rem; margin-bottom: 4px; }
+    .stock-details p { font-size: 0.85rem; color: var(--dark-muted); margin: 0; }
+    .badge-status {
+      padding: 6px 14px; border-radius: 40px;
+      font-size: 0.8rem; font-weight: 700; margin-left: auto;
+    }
+    .badge-status.available { background-color: var(--green-light); color: var(--green); }
+
+    /* ========================================
+       BERITA & EDUKASI (NEWS/ARTICLES PUBLIC TAB)
+    ======================================== */
+    .news-container { padding: 0; }
+
+    /* Headline Banner */
+    .news-headline-banner {
+      position: relative;
+      background: linear-gradient(135deg, #382615 0%, #5A3E26 60%, #7A5933 100%);
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+      padding: 80px 60px 60px;
+      overflow: hidden;
+      color: #FFFDF6;
+    }
+    .news-headline-banner::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle at 80% 20%, rgba(238, 203, 136, 0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 20% 80%, rgba(244, 123, 48, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .news-headline-banner .headline-content {
+      position: relative; z-index: 2;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center;
+    }
+    .headline-tag {
+      display: inline-block;
+      background: rgba(238, 203, 136, 0.25);
+      color: var(--accent);
+      padding: 6px 18px; border-radius: 30px;
+      font-size: 0.8rem; font-weight: 700;
+      letter-spacing: 0.5px; margin-bottom: 20px;
+      backdrop-filter: blur(8px);
+    }
+    .headline-title {
+      font-size: 2.6rem; font-weight: 800;
+      line-height: 1.3; margin-bottom: 16px;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.15);
+    }
+    .headline-snippet {
+      font-size: 1.05rem; line-height: 1.7;
+      opacity: 0.8; margin-bottom: 28px;
+    }
+    .headline-meta {
+      display: flex; gap: 20px; align-items: center;
+      font-size: 0.85rem; opacity: 0.6;
+    }
+    .headline-img-wrapper {
+      background: linear-gradient(135deg, #FFF8E8 0%, #FFE8C2 100%);
+      border-radius: var(--radius-lg);
+      height: 320px; display: flex; align-items: center; justify-content: center;
+      font-size: 8rem;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+      position: relative; overflow: hidden;
+    }
+    .headline-img-wrapper::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 60%;
+      background: linear-gradient(to top, rgba(56, 38, 21, 0.08), transparent);
+    }
+
+    /* Article Grid */
+    .news-grid-section { padding: 60px; }
+    .news-grid-header {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-bottom: 40px;
+    }
+    .news-grid-header h2 { font-weight: 800; font-size: 1.8rem; }
+    .news-filter-pills {
+      display: flex; gap: 8px;
+    }
+    .news-filter-pill {
+      border: 1.5px solid rgba(56, 38, 21, 0.1);
+      background: #FFFFFF; padding: 8px 20px;
+      border-radius: 30px; font-weight: 600; font-size: 0.85rem;
+      cursor: pointer; transition: var(--transition); font-family: inherit;
+    }
+    .news-filter-pill:hover, .news-filter-pill.active {
+      background: var(--accent-grad);
+      border-color: transparent; color: #FFFDF6;
+      box-shadow: 0 4px 12px rgba(244, 123, 48, 0.2);
+    }
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+    .article-card {
+      background: #FFFFFF;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(56, 38, 21, 0.04);
+      transition: var(--transition);
+      display: flex; flex-direction: column;
+    }
+    .article-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-deep);
+    }
+    .article-card-img {
+      height: 200px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5rem; position: relative;
+      overflow: hidden;
+    }
+    .article-card-img.img-edu { background: linear-gradient(135deg, #E0F5EA 0%, #C8E6D8 100%); }
+    .article-card-img.img-social { background: linear-gradient(135deg, #FFF3D6 0%, #FFE8C2 100%); }
+    .article-card-img.img-tips { background: linear-gradient(135deg, #E8F0FE 0%, #D0E2F8 100%); }
+    .article-card-img.img-event { background: linear-gradient(135deg, #FDECEA 0%, #F5C6CB 100%); }
+    .article-card-img.img-default { background: linear-gradient(135deg, #FFF8E8 0%, #FFE8C2 100%); }
+
+    .article-category-tag {
+      position: absolute; top: 14px; left: 14px;
+      padding: 5px 14px; border-radius: 20px;
+      font-size: 0.75rem; font-weight: 700;
+      backdrop-filter: blur(8px);
+    }
+    .tag-edukasi { background: rgba(30, 125, 92, 0.15); color: var(--green); }
+    .tag-sosial { background: rgba(244, 123, 48, 0.15); color: var(--accent2); }
+    .tag-tips { background: rgba(25, 103, 210, 0.15); color: #1967D2; }
+    .tag-event { background: rgba(231, 76, 60, 0.15); color: #E74C3C; }
+
+    .article-card-body {
+      padding: 24px; display: flex; flex-direction: column; flex: 1;
+    }
+    .article-card-body h4 {
+      font-weight: 700; font-size: 1.1rem; margin-bottom: 10px;
+      color: var(--dark); line-height: 1.4;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .article-card-body .article-snippet {
+      font-size: 0.88rem; color: var(--dark-muted);
+      line-height: 1.6; margin-bottom: 16px; flex: 1;
+      display: -webkit-box; -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .article-card-footer {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-top: auto;
+    }
+    .article-author {
+      font-size: 0.8rem; color: var(--dark-muted); font-weight: 600;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .article-author-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--accent-grad); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; font-weight: 700;
+    }
+    .btn-read-more {
+      background: transparent; border: 1.5px solid var(--accent);
+      color: var(--accent2); padding: 7px 18px;
+      border-radius: 30px; font-size: 0.82rem; font-weight: 700;
+      cursor: pointer; transition: var(--transition); font-family: inherit;
+    }
+    .btn-read-more:hover {
+      background: var(--accent-grad);
+      color: #FFFDF6; border-color: transparent;
+    }
+
+    /* ========================================
+       ADMIN PANEL — SIDEBAR LAYOUT
+    ======================================== */
+    .admin-layout {
+      display: flex; min-height: calc(100vh - 80px);
+    }
+    .admin-sidebar {
+      width: 280px; background: #FFFFFF;
+      border-right: 1px solid rgba(56, 38, 21, 0.08);
+      padding: 32px 20px; display: flex; flex-direction: column;
+      flex-shrink: 0;
+    }
+    .admin-sidebar-header {
+      text-align: center; margin-bottom: 36px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(56, 38, 21, 0.06);
+    }
+    .admin-avatar {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent2), #D65A18);
+      color: #FFFDF6; font-size: 2rem;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 14px;
+      box-shadow: 0 8px 20px rgba(244, 123, 48, 0.2);
+      font-weight: 800;
+    }
+    .admin-sidebar-header h5 {
+      font-weight: 700; font-size: 1.05rem; margin-bottom: 4px;
+    }
+    .admin-sidebar-header span {
+      font-size: 0.78rem; color: var(--dark-muted);
+      background: var(--honey-soft); padding: 4px 12px;
+      border-radius: 20px; font-weight: 600;
+    }
+    .admin-sidebar-nav {
+      list-style: none; display: flex; flex-direction: column; gap: 6px;
+      flex: 1;
+    }
+    .admin-sidebar-nav li {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 18px; border-radius: var(--radius-sm);
+      font-weight: 600; font-size: 0.92rem;
+      cursor: pointer; transition: var(--transition);
+      color: var(--dark); opacity: 0.75;
+    }
+    .admin-sidebar-nav li:hover {
+      background: var(--honey-soft); opacity: 1;
+      color: var(--accent2); transform: translateX(4px);
+    }
+    .admin-sidebar-nav li.active {
+      background: var(--honey-soft); opacity: 1;
+      color: var(--accent2); transform: translateX(4px);
+      border-left: 3px solid var(--accent2);
+    }
+    .admin-sidebar-nav li .nav-icon { font-size: 1.15rem; width: 24px; text-align: center; }
+    .admin-sidebar-nav li .nav-badge {
+      margin-left: auto;
+      background: var(--accent-grad); color: #fff;
+      padding: 2px 10px; border-radius: 20px;
+      font-size: 0.72rem; font-weight: 700;
+    }
+    .admin-sidebar-footer {
+      border-top: 1px solid rgba(56, 38, 21, 0.06);
+      padding-top: 16px; margin-top: 20px;
+    }
+    .admin-sidebar-footer p {
+      font-size: 0.75rem; color: var(--dark-muted); text-align: center;
+      opacity: 0.6;
+    }
+
+    /* Admin Main Content */
+    .admin-main {
+      flex: 1; padding: 40px 50px; overflow-y: auto;
+    }
+    .admin-page-header {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-bottom: 36px; flex-wrap: wrap; gap: 16px;
+    }
+    .admin-page-header h2 { font-weight: 800; font-size: 1.6rem; margin: 0; }
+    .admin-page-header p { color: var(--dark-muted); margin: 0; font-size: 0.9rem; }
+
+    /* Admin Sub-Pages */
+    .admin-sub-page { display: none; animation: tabFadeIn 0.4s ease forwards; }
+    .admin-sub-page.active { display: block; }
+
+    /* Stats Grid */
+    .admin-stats-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 24px; margin-bottom: 40px;
+    }
+    .stat-box {
+      background: #FFFFFF; border-radius: var(--radius-md);
+      padding: 28px 24px; box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(56, 38, 21, 0.04);
+      text-align: center; transition: var(--transition);
+    }
+    .stat-box:hover { box-shadow: var(--shadow-deep); transform: translateY(-4px); }
+    .stat-icon-wrapper {
+      width: 56px; height: 56px; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; margin: 0 auto 14px;
+    }
+    .stat-icon-wrapper.orange { background: #FFF3D6; color: var(--accent2); }
+    .stat-icon-wrapper.green { background: var(--green-light); color: var(--green); }
+    .stat-icon-wrapper.blue { background: #E8F0FE; color: #1967D2; }
+    .stat-icon-wrapper.gold { background: #FEF3D6; color: #E6A817; }
+    .stat-num-val { font-size: 2.2rem; font-weight: 800; color: var(--dark); margin-bottom: 4px; }
+    .stat-lbl { font-size: 0.85rem; font-weight: 600; color: var(--dark-muted); }
+
+    /* Validation / Data Tables */
+    .data-table-wrapper {
+      background: #FFFFFF; border-radius: var(--radius-md);
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(56, 38, 21, 0.04);
+      overflow: hidden;
+    }
+    .data-table-header {
+      padding: 22px 28px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid rgba(56, 38, 21, 0.06);
+      flex-wrap: wrap; gap: 12px;
+    }
+    .data-table-header h5 { font-weight: 700; margin: 0; font-size: 1.05rem; }
+    .data-table {
+      width: 100%; border-collapse: collapse;
+    }
+    .data-table th {
+      background: rgba(56, 38, 21, 0.02);
+      padding: 16px 24px; font-weight: 700; font-size: 0.82rem;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      color: var(--dark-muted); text-align: left;
+      border-bottom: 1px solid rgba(56, 38, 21, 0.06);
+    }
+    .data-table td {
+      padding: 18px 24px; font-size: 0.92rem;
+      border-bottom: 1px solid rgba(56, 38, 21, 0.04);
+      vertical-align: middle;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: rgba(238, 203, 136, 0.04); }
+    .action-btn-group {
+      display: flex; gap: 8px; flex-wrap: wrap;
+    }
+
+    /* Badge */
+    .badge-verified {
+      background: var(--green-light); color: var(--green);
+      padding: 5px 14px; border-radius: 20px;
+      font-size: 0.78rem; font-weight: 700;
+    }
+    .badge-pending-honey {
+      background: #FFF3D6; color: #E6A817;
+      padding: 5px 14px; border-radius: 20px;
+      font-size: 0.78rem; font-weight: 700;
+    }
+    .badge-published {
+      background: var(--green-light); color: var(--green);
+      padding: 5px 14px; border-radius: 20px;
+      font-size: 0.78rem; font-weight: 700;
+    }
+    .badge-draft {
+      background: #F0F0F0; color: #888;
+      padding: 5px 14px; border-radius: 20px;
+      font-size: 0.78rem; font-weight: 700;
+    }
+    .badge-role-donor {
+      background: #FFF3D6; color: var(--accent2);
+      padding: 4px 12px; border-radius: 20px;
+      font-size: 0.75rem; font-weight: 700;
+    }
+    .badge-role-lembaga {
+      background: #E8F0FE; color: #1967D2;
+      padding: 4px 12px; border-radius: 20px;
+      font-size: 0.75rem; font-weight: 700;
+    }
+
+    /* ========================================
+       MODAL SYSTEM
+    ======================================== */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(56, 38, 21, 0.4);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: none; align-items: center; justify-content: center;
+      z-index: 2000; padding: 24px;
+      animation: modalBgFade 0.3s ease;
+    }
+    .modal-overlay.show { display: flex; }
+    @keyframes modalBgFade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .modal-box {
+      background: var(--bg-warm);
+      border-radius: var(--radius-lg);
+      width: 100%; max-width: 720px;
+      max-height: 85vh; overflow-y: auto;
+      box-shadow: 0 30px 80px rgba(56, 38, 21, 0.2);
+      animation: modalSlideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      border: 1px solid rgba(56, 38, 21, 0.06);
+    }
+    .modal-box-lg { max-width: 900px; }
+    @keyframes modalSlideUp {
+      from { opacity: 0; transform: translateY(30px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .modal-header-custom {
+      padding: 28px 32px 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid rgba(56, 38, 21, 0.06);
+    }
+    .modal-header-custom h3 {
+      font-weight: 800; font-size: 1.3rem; margin: 0;
+    }
+    .modal-close-btn {
+      width: 40px; height: 40px; border-radius: 50%;
+      border: none; background: rgba(56, 38, 21, 0.06);
+      cursor: pointer; font-size: 1.2rem; color: var(--dark-muted);
+      transition: var(--transition);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .modal-close-btn:hover {
+      background: rgba(231, 76, 60, 0.15); color: #E74C3C;
+      transform: rotate(90deg);
+    }
+    .modal-body-custom { padding: 28px 32px; }
+    .modal-footer-custom {
+      padding: 20px 32px 28px;
+      display: flex; gap: 12px; justify-content: flex-end;
+      border-top: 1px solid rgba(56, 38, 21, 0.06);
+    }
+
+    /* Form Inputs (Honey Theme) */
+    .honey-input-group { margin-bottom: 20px; }
+    .honey-input-group label {
+      display: block; font-weight: 700; font-size: 0.9rem;
+      margin-bottom: 8px; color: var(--dark);
+    }
+    .honey-input {
+      width: 100%; background: #FFFFFF;
+      border: 2.5px solid rgba(56, 38, 21, 0.08);
+      border-radius: var(--radius-sm);
+      padding: 12px 18px; font-size: 0.95rem;
+      font-family: inherit; color: var(--dark);
+      transition: var(--transition);
+    }
+    .honey-input:focus {
+      outline: none; border-color: var(--accent2);
+      box-shadow: 0 0 0 4px rgba(244, 123, 48, 0.15);
+    }
+    .honey-input[readonly] {
+      background: rgba(56, 38, 21, 0.04);
+      border-color: transparent; cursor: not-allowed;
+    }
+    .honey-textarea {
+      width: 100%; background: #FFFFFF;
+      border: 2.5px solid rgba(56, 38, 21, 0.08);
+      border-radius: var(--radius-sm);
+      padding: 12px 18px; font-size: 0.95rem;
+      font-family: inherit; color: var(--dark);
+      transition: var(--transition);
+      resize: vertical; min-height: 160px;
+    }
+    .honey-textarea:focus {
+      outline: none; border-color: var(--accent2);
+      box-shadow: 0 0 0 4px rgba(244, 123, 48, 0.15);
+    }
+    .honey-select {
+      width: 100%; background: #FFFFFF;
+      border: 2.5px solid rgba(56, 38, 21, 0.08);
+      border-radius: var(--radius-sm);
+      padding: 12px 18px; font-size: 0.95rem;
+      font-family: inherit; color: var(--dark);
+      transition: var(--transition); cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23382615' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+    }
+    .honey-select:focus {
+      outline: none; border-color: var(--accent2);
+      box-shadow: 0 0 0 4px rgba(244, 123, 48, 0.15);
+    }
+    .file-upload-zone {
+      border: 2.5px dashed rgba(56, 38, 21, 0.12);
+      border-radius: var(--radius-sm);
+      padding: 30px; text-align: center;
+      cursor: pointer; transition: var(--transition);
+      background: rgba(255,255,255,0.5);
+    }
+    .file-upload-zone:hover {
+      border-color: var(--accent2);
+      background: rgba(244, 123, 48, 0.04);
+    }
+    .file-upload-zone p {
+      color: var(--dark-muted); font-size: 0.88rem; margin: 0;
+    }
+    .file-upload-zone .upload-icon {
+      font-size: 2.5rem; margin-bottom: 10px; opacity: 0.5;
+    }
+
+    /* Delete Confirmation Modal */
+    .delete-confirm-content {
+      text-align: center; padding: 20px 0;
+    }
+    .delete-confirm-content .delete-icon {
+      font-size: 4rem; margin-bottom: 16px;
+      animation: shakeWarning 0.5s ease;
+    }
+    @keyframes shakeWarning {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+    .delete-confirm-content h4 {
+      font-weight: 700; font-size: 1.2rem; margin-bottom: 8px;
+    }
+    .delete-confirm-content p {
+      color: var(--dark-muted); font-size: 0.92rem;
+    }
+
+    /* Preview Modal */
+    .preview-article-img {
+      width: 100%; height: 250px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #FFF8E8 0%, #FFE8C2 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 6rem; margin-bottom: 24px;
+    }
+    .preview-article-meta {
+      display: flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap;
+    }
+    .preview-article-content {
+      font-size: 0.95rem; color: var(--dark-muted); line-height: 1.8;
+    }
+
+    /* Alert Toasts */
+    .toast-notification {
+      position: fixed; top: 100px; right: 30px;
+      background: #FFFFFF; border-radius: var(--radius-sm);
+      padding: 18px 28px; box-shadow: 0 10px 40px rgba(56, 38, 21, 0.15);
+      border-left: 4px solid var(--green);
+      z-index: 3000; display: none;
+      animation: toastSlide 0.4s ease;
+      max-width: 400px;
+    }
+    .toast-notification.show { display: flex; align-items: center; gap: 12px; }
+    .toast-notification.error { border-left-color: #E74C3C; }
+    @keyframes toastSlide {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .toast-icon { font-size: 1.5rem; }
+    .toast-text { font-weight: 600; font-size: 0.9rem; }
+
+    .alert-success-honey {
+      background: var(--green-light);
+      border: 1.5px solid rgba(30, 125, 92, 0.2);
+      color: var(--green);
+      border-radius: var(--radius-sm);
+      padding: 16px 20px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    /* User Profile Badge */
+    .user-profile-badge {
+      display: flex; align-items: center; gap: 12px;
+      background: #FFFFFF; padding: 8px 20px 8px 8px;
+      border-radius: 40px; box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(56, 38, 21, 0.04);
+    }
+    .user-avatar-sm {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: var(--green); color: #FFFDF6;
+      font-weight: 700; display: flex;
+      align-items: center; justify-content: center;
+    }
+
+    /* Responsive tweaks for admin stats on smaller desktops */
+    @media (max-width: 1200px) {
+      .admin-stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .articles-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ========================================
+       TAB 2: MITRA DONOR DASHBOARD
+    ======================================== */
+    .dashboard-container { display: flex; min-height: calc(100vh - 80px); }
+    .sidebar {
+      width: 280px; background: #FFFFFF;
+      border-right: 1px solid rgba(56, 38, 21, 0.08);
+      padding: 32px 20px; display: flex; flex-direction: column;
+      flex-shrink: 0;
+    }
+    .sidebar-user { text-align: center; margin-bottom: 36px; padding-bottom: 24px; border-bottom: 1px solid rgba(56, 38, 21, 0.06); }
+    .sidebar-avatar {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: var(--accent-grad); color: #FFFDF6; font-size: 2rem;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 14px; box-shadow: 0 8px 20px rgba(244, 123, 48, 0.15);
+      font-weight: 800;
+    }
+    .sidebar-user h5 { font-weight: 700; font-size: 1.05rem; margin-bottom: 4px; }
+    .sidebar-user span {
+      font-size: 0.78rem; color: var(--dark-muted);
+      background: var(--honey-soft); padding: 4px 12px;
+      border-radius: 20px; font-weight: 600;
+    }
+    .sidebar-menu { list-style: none; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .sidebar-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 18px; border-radius: var(--radius-sm);
+      font-weight: 600; font-size: 0.92rem;
+      cursor: pointer; transition: var(--transition);
+      color: var(--dark); opacity: 0.75;
+    }
+    .sidebar-item:hover, .sidebar-item.active {
+      background: var(--honey-soft); opacity: 1;
+      color: var(--accent2); transform: translateX(4px);
+    }
+    .sidebar-item.active { border-left: 3px solid var(--accent2); }
+    .dashboard-main { flex: 1; padding: 40px 50px; overflow-y: auto; }
+    .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 36px; flex-wrap: wrap; gap: 16px; }
+    .dashboard-header h2 { font-weight: 800; font-size: 1.6rem; margin: 0; }
+    .dashboard-header p { color: var(--dark-muted); margin: 0; font-size: 0.9rem; }
+    .donations-table-wrapper {
+      background: #FFFFFF; border-radius: var(--radius-md);
+      box-shadow: var(--shadow-soft); border: 1px solid rgba(56, 38, 21, 0.04);
+      overflow: hidden;
+    }
+    .donations-table { width: 100%; border-collapse: collapse; }
+    .donations-table th {
+      background: rgba(56, 38, 21, 0.02);
+      padding: 16px 24px; font-weight: 700; font-size: 0.82rem;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      color: var(--dark-muted); text-align: left;
+      border-bottom: 1px solid rgba(56, 38, 21, 0.06);
+    }
+    .donations-table td {
+      padding: 18px 24px; font-size: 0.92rem;
+      border-bottom: 1px solid rgba(56, 38, 21, 0.04);
+      vertical-align: middle;
+    }
+    .donations-table tr:last-child td { border-bottom: none; }
+    .donations-table tr:hover td { background: rgba(238, 203, 136, 0.04); }
+    .category-pill {
+      background: rgba(56, 38, 21, 0.05); color: var(--dark-muted);
+      padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 600;
+    }
+    .donor-subpage { display: none; animation: tabFadeIn 0.4s ease forwards; }
+    .donor-subpage.active { display: block; }
+
+    /* ========================================
+       TAB 3: KATALOG (LIVE INVENTORY)
+    ======================================== */
+    .catalog-container { padding: 60px; }
+    .catalog-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; flex-wrap: wrap; gap: 16px; }
+    .catalog-top h2 { font-weight: 800; font-size: 1.8rem; }
+    .filter-wrapper { display: flex; gap: 10px; margin-bottom: 40px; flex-wrap: wrap; }
+    .filter-pill {
+      border: 1.5px solid rgba(56, 38, 21, 0.1);
+      background: #FFFFFF; padding: 8px 22px;
+      border-radius: 30px; font-weight: 600; font-size: 0.85rem;
+      cursor: pointer; transition: var(--transition); font-family: inherit;
+    }
+    .filter-pill:hover, .filter-pill.active {
+      background: var(--accent-grad); border-color: transparent; color: #FFFDF6;
+      box-shadow: 0 4px 12px rgba(244, 123, 48, 0.2);
+    }
+    .food-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+    @media (max-width: 992px) {
+      .food-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 576px) {
+      .food-grid { grid-template-columns: 1fr; }
+    }
+    .food-card {
+      background: #FFFFFF; border-radius: var(--radius-md); overflow: hidden;
+      box-shadow: var(--shadow-soft); border: 1px solid rgba(56, 38, 21, 0.04);
+      transition: var(--transition); display: flex; flex-direction: column;
+    }
+    .food-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-deep); }
+    .food-card-img {
+      height: 180px; background: linear-gradient(135deg, #FFF8E8 0%, #FFE8C2 100%);
+      display: flex; align-items: center; justify-content: center; font-size: 4rem;
+      position: relative;
+    }
+    .badge-floating {
+      position: absolute; top: 14px; right: 14px;
+      background: var(--accent-grad); color: #FFFDF6;
+      padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;
+    }
+    .food-card-body { padding: 24px; display: flex; flex-direction: column; flex: 1; }
+    .food-card-body h4 { font-weight: 700; font-size: 1.15rem; margin-bottom: 8px; }
+    .food-location { font-size: 0.8rem; color: var(--dark-muted); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+    .food-qty { font-weight: 700; color: var(--green); font-size: 0.9rem; margin-bottom: 20px; }
+    .btn-card-claim { margin-top: auto; width: 100%; text-align: center; justify-content: center; }
+
+    /* ========================================
+       TAB 4: DETAIL CLAIM & DISTRIBUSI TIMELINE
+    ======================================== */
+    .detail-container { padding: 60px; max-width: 1200px; margin: 0 auto; }
+    .detail-hero {
+      background: #FFFFFF; border-radius: var(--radius-lg); padding: 40px;
+      box-shadow: var(--shadow-soft); border: 1px solid rgba(56, 38, 21, 0.04);
+      display: flex; gap: 40px; margin-bottom: 40px; align-items: center;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 768px) {
+      .detail-hero { flex-direction: column; align-items: flex-start; }
+    }
+    .detail-img-box {
+      font-size: 5rem; background: linear-gradient(135deg, #FFF8E8 0%, #FFE8C2 100%);
+      width: 180px; height: 180px; border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .detail-info { flex: 1; }
+    .detail-info h2 { font-weight: 800; font-size: 2rem; margin-bottom: 8px; }
+    .detail-origin { font-size: 0.9rem; color: var(--dark-muted); margin-bottom: 16px; }
+    .detail-pills { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+    .detail-pill {
+      background: var(--honey-soft); color: var(--dark);
+      padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .detail-description { font-size: 0.95rem; color: var(--dark-muted); line-height: 1.6; margin: 0; }
+    .honey-form-wrapper {
+      background: linear-gradient(135deg, #FFF3D6 0%, #FFECC4 100%);
+      border-radius: var(--radius-lg); padding: 40px;
+      box-shadow: var(--shadow-soft); border: 1px solid rgba(244, 123, 48, 0.1);
+      margin-bottom: 50px;
+    }
+    .honey-form-wrapper h3 { font-weight: 800; font-size: 1.3rem; margin-bottom: 24px; }
+    .timeline-title { font-weight: 800; font-size: 1.3rem; margin-bottom: 30px; }
+    .timeline-wrapper { position: relative; padding-left: 35px; }
+    .timeline-wrapper::before {
+      content: ''; position: absolute; left: 10px; top: 10px; bottom: 10px;
+      width: 3px; background: linear-gradient(180deg, var(--accent) 0%, var(--green) 100%);
+      border-radius: 4px;
+    }
+    .timeline-node { position: relative; margin-bottom: 40px; }
+    .timeline-node:last-child { margin-bottom: 0; }
+    .timeline-indicator {
+      position: absolute; left: -35px; top: 4px;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: #FFFFFF; border: 3.5px solid var(--accent);
+      z-index: 2; transition: var(--transition);
+    }
+    .timeline-node.done .timeline-indicator { background: var(--green); border-color: var(--green); }
+    .timeline-node.active .timeline-indicator {
+      background: #FFFFFF; border-color: var(--green);
+      animation: pulseGreen 1.5s infinite;
+    }
+    .timeline-node-content {
+      background: #FFFFFF; border-radius: var(--radius-sm);
+      padding: 20px 24px; box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(56, 38, 21, 0.03);
+    }
+    .timeline-node-content h5 { font-weight: 700; font-size: 1rem; margin-bottom: 6px; display: flex; justify-content: space-between; }
+    .timeline-node-content p { font-size: 0.88rem; color: var(--dark-muted); margin: 0; line-height: 1.6; }
+    .timeline-time { font-size: 0.75rem; color: var(--dark-muted); opacity: 0.7; font-weight: 500; }
+
+
+  </style>
+</head>
+<body>
+
+<!-- ================================================
+     NAVBAR
+================================================ -->
+<nav class="custom-navbar d-flex justify-content-between align-items-center">
+  <a class="brand-logo" onclick="showTab('landing')">🍞 <span>FoodShare</span></a>
+  
+  <div class="tabs-wrapper">
+    <button class="tab-trigger active" id="tabBtnLanding" onclick="showTab('landing')">Beranda</button>
+    <button class="tab-trigger" id="tabBtnDonor" onclick="showTab('donor')">Mitra Donor</button>
+    <button class="tab-trigger" id="tabBtnCatalog" onclick="showTab('catalog')">Katalog</button>
+    <button class="tab-trigger" id="tabBtnClaim" onclick="showTab('claim')">Klaim & Tracking</button>
+    <button class="tab-trigger" id="tabBtnNews" onclick="showTab('news')">Berita & Edukasi</button>
+
+    <button class="tab-trigger" id="tabBtnAdmin" onclick="showTab('admin')">Admin Panel</button>
+  </div>
+
+  <div class="d-none d-lg-block">
+    <button class="btn-honey" onclick="showTab('catalog')">Selamatkan Makanan 🥐</button>
+  </div>
+</nav>
+
+
+<!-- ================================================
+     TAB 1: LANDING PAGE (BERANDA)
+================================================ -->
+<div class="page-section active" id="page-landing">
+  <div class="container-fluid max-width-lg">
+    
+    <!-- Hero Banner -->
+    <div class="row hero-container">
+      <div class="col-lg-6 pr-lg-5">
+        <div style="display:inline-block;background:var(--green-light);color:var(--green);padding:8px 18px;border-radius:40px;font-size:.85rem;font-weight:700;margin-bottom:20px;letter-spacing:0.5px">🌱 ZERO FOOD WASTE MOVEMENT</div>
+        <h1 class="hero-title">Jangan Biarkan Makanan Baik Terbuang Sia-Sia.</h1>
+        <p class="hero-sub">Hubungkan surplus makanan berkualitas tinggi dari restoran &amp; bakery premium ke panti asuhan, lembaga sosial, serta komunitas yang membutuhkan. Bersama kita selamatkan hidangan lezat dan kurangi limbah bumi.</p>
+        <div class="d-flex gap-3">
+          <button class="btn-honey px-5 py-3" onclick="showTab('catalog')">Jelajahi Makanan Tersedia</button>
+          <button class="btn-honey-outline px-4" onclick="showTab('donor')">Gabung Jadi Mitra</button>
+        </div>
+        
+        <div class="row mt-5">
+          <div class="col-4 border-end">
+            <h3 class="fw-extrabold mb-0" style="color:var(--accent2)">247+</h3>
+            <small class="text-muted fw-semibold">Porsi Terselamatkan</small>
+          </div>
+          <div class="col-4 border-end">
+            <h3 class="fw-extrabold mb-0" style="color:var(--green)">12</h3>
+            <small class="text-muted fw-semibold">Mitra Donor</small>
+          </div>
+          <div class="col-4">
+            <h3 class="fw-extrabold mb-0" style="color:var(--dark)">8</h3>
+            <small class="text-muted fw-semibold">Lembaga Terdaftar</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 hero-visual-wrapper mt-5 mt-lg-0">
+        <div class="floating-accent-1"></div>
+        <div class="floating-accent-2"></div>
+        <img src="hero_food.png" alt="Visual Makanan Bakery Premium" class="hero-visual">
+      </div>
+    </div>
+
+    <!-- Section Cara Kerja -->
+    <div class="steps-section">
+      <div class="text-center mb-5">
+        <h2 class="fw-bold" style="font-size: 2rem;">Langkah Penyelamatan Makanan 🌿</h2>
+        <p class="text-muted">Prosedur berbagi makanan surplus yang mudah dan 100% transparan</p>
+      </div>
+      <div class="row g-4 max-width-md mx-auto">
+        <div class="col-md-3">
+          <div class="step-box">
+            <div class="step-badge">1</div>
+            <h4>Donor Input Data</h4>
+            <p>Restoran/bakery memasukkan data makanan layak yang berlebih.</p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="step-box">
+            <div class="step-badge">2</div>
+            <h4>Real-Time Claim</h4>
+            <p>Lembaga sosial mengklaim makanan langsung dari sistem katalog.</p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="step-box">
+            <div class="step-badge">3</div>
+            <h4>Distribusi</h4>
+            <p>Relawan sigap mengantarkan atau lembaga melakukan pickup langsung.</p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="step-box">
+            <div class="step-badge">4</div>
+            <h4>Limbah Berkurang</h4>
+            <p>Makanan lezat terselamatkan dan dinikmati oleh yang berhak.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Stock Mini Section -->
+    <div class="mini-live-stock">
+      <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+          <h2 class="fw-bold m-0" style="font-size: 1.8rem;">📦 Live Inventory Makanan</h2>
+          <p class="text-muted m-0">Persediaan real-time saat ini dari seluruh mitra donor Balikpapan</p>
+        </div>
+        <button class="btn-honey-outline" onclick="showTab('catalog')">Lihat Semua</button>
+      </div>
+      
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6">
+          <div class="live-stock-item">
+            <div class="stock-emoji">🍱</div>
+            <div class="stock-details">
+              <h5>Nasi Box Ayam Goreng</h5>
+              <p>Restoran Sederhana • 30 porsi</p>
+            </div>
+            <span class="badge-status available">Tersedia</span>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="live-stock-item">
+            <div class="stock-emoji">🍞</div>
+            <div class="stock-details">
+              <h5>Roti Tawar &amp; Selai</h5>
+              <p>Restoran Sederhana • 50 bungkus</p>
+            </div>
+            <span class="badge-status available">Tersedia</span>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="live-stock-item">
+            <div class="stock-emoji">🧃</div>
+            <div class="stock-details">
+              <h5>Es Teh &amp; Jus Kemasan</h5>
+              <p>Restoran Sederhana • 40 botol</p>
+            </div>
+            <span class="badge-status available">Tersedia</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ================================================
+     TAB 2: MITRA DONOR DASHBOARD
+================================================ -->
+<div class="page-section" id="page-donor">
+  <div class="dashboard-container">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar">🏪</div>
+        <h5 id="donorSidebarName">Restoran Sederhana</h5>
+        <span id="donorSidebarId">donor_id: 2</span>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="sidebar-item active" onclick="switchDonorSubPage('summary', this)"><a>📊 Ringkasan Data</a></li>
+        <li class="sidebar-item" onclick="switchDonorSubPage('food', this)"><a>🍞 Makanan Saya</a></li>
+        <li class="sidebar-item" onclick="switchDonorSubPage('log', this)"><a>🕒 Riwayat Log</a></li>
+        <li class="sidebar-item" onclick="switchDonorSubPage('config', this)"><a>⚙️ Konfigurasi Toko</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Dashboard Content -->
+    <main class="dashboard-main">
+      
+      <!-- Donor Dashboard Title -->
+      <div class="dashboard-header">
+        <div>
+          <h2 class="fw-bold m-0" id="donorDashboardTitle">Ringkasan Data 📊</h2>
+          <p class="text-muted">Profil Aktif: <strong id="donorProfileName">Restoran Sederhana Balikpapan</strong></p>
+        </div>
+        <button class="btn-honey" onclick="openInputDonasiModal()">+ Bagikan Makanan Surplus</button>
+      </div>
+
+      <!-- Alert Donasi Sukses (Mockup) -->
+      <div class="alert alert-success-honey" id="donasiSuccessAlert" style="display:none">
+        🎉 Sukses! Makanan surplus Anda berhasil dibagikan dan sekarang terdaftar di katalog.
+      </div>
+
+      <!-- Sub-page: Summary -->
+      <div class="donor-subpage active" id="donor-subpage-summary">
+        <div class="row g-4 mb-5">
+          <div class="col-md-4">
+            <div class="custom-card text-center">
+              <h4 class="fw-extrabold mb-1" id="donorStatTotal" style="color:var(--accent2); font-size:2rem;">120</h4>
+              <small class="text-muted">Total Porsi Dibagikan</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="custom-card text-center">
+              <h4 class="fw-extrabold mb-1" id="donorStatActive" style="color:var(--green); font-size:2rem;">3</h4>
+              <small class="text-muted">Donasi Sedang Aktif</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="custom-card text-center">
+              <h4 class="fw-extrabold mb-1" style="color:var(--dark); font-size:2rem;">5</h4>
+              <small class="text-muted">Lembaga Terbantu</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="custom-card p-0 overflow-hidden">
+          <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
+            <h5 class="fw-bold m-0">Riwayat Distribusi Donasi (Terbaru)</h5>
+            <span class="badge-status available">Aktif</span>
+          </div>
+          <div class="table-responsive">
+            <table class="donations-table">
+              <thead>
+                <tr>
+                  <th>Nama Hidangan</th>
+                  <th>Jumlah/Kuantitas</th>
+                  <th>Kategori</th>
+                  <th>Status</th>
+                  <th>Kedaluwarsa</th>
+                </tr>
+              </thead>
+              <tbody id="riwayatDonasiBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sub-page: Makanan Saya -->
+      <div class="donor-subpage" id="donor-subpage-food">
+        <div class="custom-card p-0 overflow-hidden">
+          <div class="p-4 border-bottom">
+            <h5 class="fw-bold m-0">Semua Makanan Surplus Aktif Anda</h5>
+          </div>
+          <div class="table-responsive">
+            <table class="donations-table">
+              <thead>
+                <tr>
+                  <th>Nama Hidangan</th>
+                  <th>Jumlah/Kuantitas</th>
+                  <th>Kategori</th>
+                  <th>Status</th>
+                  <th>Kedaluwarsa</th>
+                  <th style="text-align:center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="riwayatDonasiFullBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sub-page: Riwayat Log -->
+      <div class="donor-subpage" id="donor-subpage-log">
+        <div class="custom-card p-0 overflow-hidden">
+          <div class="p-4 border-bottom">
+            <h5 class="fw-bold m-0">Log Klaim Lembaga terhadap Hidangan Anda</h5>
+          </div>
+          <div class="table-responsive">
+            <table class="donations-table">
+              <thead>
+                <tr>
+                  <th>ID Klaim</th>
+                  <th>Nama Hidangan</th>
+                  <th>Lembaga Pengklaim</th>
+                  <th>Porsi</th>
+                  <th>Metode</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="donorClaimsLogBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sub-page: Konfigurasi Toko -->
+      <div class="donor-subpage" id="donor-subpage-config">
+        <div class="custom-card">
+          <h5 class="fw-bold mb-4">⚙️ Profil Mitra & Konfigurasi Toko</h5>
+          <form id="donorConfigForm" onsubmit="saveDonorConfig(event)">
+            <div class="honey-input-group">
+              <label for="configDonorNameInput">Nama Usaha / Toko</label>
+              <input type="text" class="honey-input" id="configDonorNameInput" required>
+            </div>
+            <div class="row">
+              <div class="col-md-6 honey-input-group">
+                <label for="configDonorPhoneInput">Nomor Telepon Kontak</label>
+                <input type="text" class="honey-input" id="configDonorPhoneInput" required>
+              </div>
+              <div class="col-md-6 honey-input-group">
+                <label for="configDonorEmailInput">Alamat Email Bisnis</label>
+                <input type="email" class="honey-input" id="configDonorEmailInput" value="sederhana@foodshare.id" readonly>
+              </div>
+            </div>
+            <div class="honey-input-group">
+              <label for="configDonorAddressInput">Alamat Fisik Toko (Tempat Penjemputan)</label>
+              <input type="text" class="honey-input" id="configDonorAddressInput" required>
+            </div>
+            <div class="text-end mt-3">
+              <button type="submit" class="btn-honey px-4 py-2">💾 Simpan Perubahan Profil</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+
+<!-- ================================================
+     TAB 3: KATALOG (LIVE INVENTORY)
+================================================ -->
+<div class="page-section" id="page-catalog">
+  <div class="catalog-container">
+    
+    <div class="catalog-top">
+      <div>
+        <h2 class="fw-bold m-0">🛒 Live Inventory Makanan</h2>
+        <p class="text-muted m-0">Persediaan makanan surplus aktif berstatus <strong>'Available'</strong></p>
+      </div>
+      <div class="user-profile-badge" id="catalogUserBadge">
+        <div class="user-avatar-sm">PA</div>
+        <div>
+          <div class="fw-bold" style="font-size:0.85rem">Panti Asuhan Harapan Bangsa</div>
+          <small class="text-muted" style="font-size:0.75rem">lembaga_id: 4</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search & Filters -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+      <div class="filter-wrapper m-0">
+        <button class="filter-pill active" onclick="filterCatalog('semua')">Semua</button>
+        <button class="filter-pill" onclick="filterCatalog('makanan_berat')">Makanan Berat</button>
+        <button class="filter-pill" onclick="filterCatalog('roti')">Roti &amp; Kue</button>
+        <button class="filter-pill" onclick="filterCatalog('snack')">Snack</button>
+        <button class="filter-pill" onclick="filterCatalog('minuman')">Minuman</button>
+      </div>
+      <div class="position-relative" style="max-width: 320px; width: 100%;">
+        <span class="position-absolute" style="left: 18px; top: 50%; transform: translateY(-50%); color: var(--dark-muted); z-index: 5;">🔍</span>
+        <input type="text" class="honey-input" id="catalogSearchInput" placeholder="Cari makanan yang lezat..." onkeyup="searchCatalog(this.value)" style="padding-left: 45px; padding-right: 20px;">
+      </div>
+    </div>
+
+    <!-- Food Grid -->
+    <div class="food-grid" id="catalogFoodGrid">
+      <!-- Dynamically populated -->
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ================================================
+     TAB 4: DETAIL CLAIM & DISTRIBUSI TIMELINE
+================================================ -->
+<div class="page-section" id="page-claim">
+  <div class="detail-container">
+    
+    <div class="mb-4">
+      <h2 class="fw-bold">📍 Detail Klaim &amp; Distribusi Makanan</h2>
+      <p class="text-muted">Proses pengisian klaim serta pelacakan real-time dari distribusi kurir relawan</p>
+    </div>
+
+    <!-- Dropdown Selector for Active Claims (to toggle display) -->
+    <div class="custom-card mb-4" id="activeClaimSelectorWrapper" style="display:none;">
+      <label class="fw-bold mb-2 text-dark" style="font-size:0.9rem">Lacak Klaim Aktif Anda:</label>
+      <select class="honey-select" id="activeClaimSelector" onchange="renderActiveClaimTimeline(this.value)">
+        <!-- Dynamically populated -->
+      </select>
+    </div>
+
+    <!-- Detail Card -->
+    <div class="detail-hero" id="claimDetailCard">
+      <div class="detail-img-box" id="detailFoodIcon">🍱</div>
+      <div class="detail-info flex-grow-1">
+        <span class="badge-status available mb-2 d-inline-block">Tersedia</span>
+        <h2 id="detailFoodName">Nasi Box Ayam Goreng</h2>
+        <div class="detail-origin" id="detailFoodOrigin">📍 Restoran Sederhana Balikpapan</div>
+        <div class="detail-pills">
+          <span class="detail-pill" id="detailFoodQty">🍽️ 30 porsi</span>
+          <span class="detail-pill" id="detailFoodCategory">📂 makanan_berat</span>
+          <span class="detail-pill" id="detailFoodExp">⏰ Expired: 4 jam lagi</span>
+        </div>
+        <p class="detail-description">Surplus hidangan bernutrisi tinggi dari Mitra Donor Terpercaya. Bersih, higienis, dan dikemas rapi dalam kemasan ramah lingkungan. Sangat baik untuk langsung dikonsumsi.</p>
+      </div>
+    </div>
+
+    <!-- Caramel Claim Form -->
+    <div class="honey-form-wrapper" id="claimFormBox">
+      <h3 class="fw-bold text-dark">✍️ Form Klaim Makanan Instan</h3>
+      
+      <div id="claimSuccessBox" class="alert-success-honey mb-4" style="display:none;">
+        🎉 Sukses! Pengajuan klaim telah dikirim ke sistem. Silakan lacak statusnya pada timeline di bawah.
+      </div>
+
+      <form id="instantClaimForm" onsubmit="submitClaimForm(event)">
+        <input type="hidden" id="claimFoodIdInput" value="">
+        <div class="row">
+          <div class="col-md-6 honey-input-group">
+            <label>Nama Lembaga Pemohon</label>
+            <input type="text" class="honey-input" id="claimLembagaNameInput" value="Panti Asuhan Harapan Bangsa (lembaga_id: 4)" readonly>
+          </div>
+          <div class="col-md-6 honey-input-group">
+            <label>Porsi yang Diambil (Maksimal Stok)</label>
+            <input type="number" class="honey-input" id="claimQtyInput" value="15" min="1" required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 honey-input-group">
+            <label>Metode Penyaluran</label>
+            <select class="honey-select" id="claimMethodSelect">
+              <option value="pickup">🚗 Pickup (Ambil Langsung ke Restoran)</option>
+              <option value="delivery" selected>🚚 Delivery (Penyaluran Relawan &amp; Kurir)</option>
+            </select>
+          </div>
+          <div class="col-md-6 honey-input-group">
+            <label>Catatan Tambahan untuk Donor &amp; Relawan</label>
+            <input type="text" class="honey-input" id="claimNotesInput" placeholder="Contoh: Kami sangat membutuhkan ini untuk makan siang anak-anak panti." value="Mohon bantuan relawan untuk mengantarkan ke sekretariat panti asuhan kami.">
+          </div>
+        </div>
+        
+        <div class="text-end mt-3">
+          <button type="submit" class="btn-honey px-5 py-3">Kirim &amp; Proses Klaim Sekarang 🚀</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Timeline Tracking -->
+    <div>
+      <h4 class="timeline-title">📍 Pelacakan Distribusi Real-Time</h4>
+      <div class="timeline-wrapper" id="distributionTimeline">
+        <!-- Dynamically drawn -->
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+<!-- ================================================
+     TAB: BERITA & EDUKASI (PUBLIC NEWS PORTAL)
+================================================ -->
+<div class="page-section" id="page-news">
+  <div class="news-container">
+    
+    <!-- Headline Banner -->
+    <div class="news-headline-banner">
+      <div class="headline-content">
+        <div>
+          <span class="headline-tag">🔥 ARTIKEL TERPOPULER</span>
+          <h1 class="headline-title">5 Cara Restoran Mengurangi Food Waste di Kota Balikpapan</h1>
+          <p class="headline-snippet">Pelajari strategi nyata yang telah diterapkan oleh mitra donor FoodShare dalam mengurangi limbah makanan hingga 40% setiap bulannya, dari perencanaan porsi hingga kolaborasi dengan lembaga sosial setempat.</p>
+          <div class="headline-meta">
+            <span>📝 Admin FoodShare</span>
+            <span>📅 28 Mei 2026</span>
+            <span>👁 1.2K Pembaca</span>
+          </div>
+          <button class="btn-honey mt-4" onclick="showToast('Membuka artikel lengkap...')">Baca Artikel Utama →</button>
+        </div>
+        <div class="headline-img-wrapper">📰</div>
+      </div>
+    </div>
+
+    <!-- Articles Grid Section -->
+    <div class="news-grid-section">
+      <div class="news-grid-header">
+        <div>
+          <h2>📚 Semua Artikel & Berita</h2>
+          <p class="text-muted m-0">Informasi terkini seputar gerakan hemat makanan dan kegiatan sosial</p>
+        </div>
+        <div class="news-filter-pills">
+          <button class="news-filter-pill active" onclick="filterNews('semua', this)">Semua</button>
+          <button class="news-filter-pill" onclick="filterNews('edukasi', this)">Edukasi</button>
+          <button class="news-filter-pill" onclick="filterNews('sosial', this)">Kegiatan Sosial</button>
+          <button class="news-filter-pill" onclick="filterNews('tips', this)">Tips Mitra</button>
+        </div>
+      </div>
+
+      <div class="articles-grid" id="publicArticlesGrid">
+
+        <!-- Article Card 1 -->
+        <div class="article-card" data-news-category="edukasi">
+          <div class="article-card-img img-edu">
+            🥗
+            <span class="article-category-tag tag-edukasi">Edukasi</span>
+          </div>
+          <div class="article-card-body">
+            <h4>Mengapa 1/3 Makanan Dunia Terbuang Sia-Sia? Fakta & Solusi</h4>
+            <p class="article-snippet">Menurut FAO, sekitar 1.3 miliar ton makanan terbuang per tahun secara global. Artikel ini mengupas penyebab utama dan bagaimana kita semua bisa ikut berpartisipasi melalui platform distribusi surplus.</p>
+            <div class="article-card-footer">
+              <div class="article-author">
+                <div class="article-author-avatar">A</div>
+                Admin
+              </div>
+              <button class="btn-read-more" onclick="showToast('Membuka artikel lengkap...')">Baca Selengkapnya</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Article Card 2 -->
+        <div class="article-card" data-news-category="sosial">
+          <div class="article-card-img img-social">
+            🤝
+            <span class="article-category-tag tag-sosial">Kegiatan Sosial</span>
+          </div>
+          <div class="article-card-body">
+            <h4>Panti Asuhan Harapan Bangsa Terima 150 Porsi dari Program FoodShare</h4>
+            <p class="article-snippet">Minggu lalu, tim FoodShare berhasil menyalurkan 150 porsi nasi box dari Restoran Sederhana ke Panti Asuhan Harapan Bangsa. Berikut dokumentasi kegiatan yang penuh kehangatan tersebut.</p>
+            <div class="article-card-footer">
+              <div class="article-author">
+                <div class="article-author-avatar">A</div>
+                Admin
+              </div>
+              <button class="btn-read-more" onclick="showToast('Membuka artikel lengkap...')">Baca Selengkapnya</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Article Card 3 -->
+        <div class="article-card" data-news-category="tips">
+          <div class="article-card-img img-tips">
+            💡
+            <span class="article-category-tag tag-tips">Tips Mitra</span>
+          </div>
+          <div class="article-card-body">
+            <h4>Panduan Mitra Donor: Cara Input Surplus Makanan dengan Benar</h4>
+            <p class="article-snippet">Untuk memastikan makanan surplus kamu tepat sasaran, ikuti panduan lengkap input data melalui dashboard Mitra Donor. Dari kategori makanan hingga estimasi kedaluwarsa.</p>
+            <div class="article-card-footer">
+              <div class="article-author">
+                <div class="article-author-avatar">A</div>
+                Admin
+              </div>
+              <button class="btn-read-more" onclick="showToast('Membuka artikel lengkap...')">Baca Selengkapnya</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Article Card 4 -->
+        <div class="article-card" data-news-category="edukasi">
+          <div class="article-card-img img-edu">
+            🌍
+            <span class="article-category-tag tag-edukasi">Edukasi</span>
+          </div>
+          <div class="article-card-body">
+            <h4>SDGs Goal 12: Konsumsi & Produksi Bertanggung Jawab dan Peran Kita</h4>
+            <p class="article-snippet">Sustainable Development Goals (SDGs) nomor 12 berfokus pada pola konsumsi berkelanjutan. Simak bagaimana gerakan zero food waste berkontribusi langsung pada pencapaian target global ini.</p>
+            <div class="article-card-footer">
+              <div class="article-author">
+                <div class="article-author-avatar">A</div>
+                Admin
+              </div>
+              <button class="btn-read-more" onclick="showToast('Membuka artikel lengkap...')">Baca Selengkapnya</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Article Card 5 -->
+        <div class="article-card" data-news-category="sosial">
+          <div class="article-card-img img-social">
+            🎉
+            <span class="article-category-tag tag-sosial">Kegiatan Sosial</span>
+          </div>
+          <div class="article-card-body">
+            <h4>Perayaan Milestone: 200+ Porsi Terselamatkan di Bulan Pertama!</h4>
+            <p class="article-snippet">Dalam kurun waktu sebulan sejak peluncuran, platform FoodShare berhasil memfasilitasi penyelamatan lebih dari 200 porsi makanan surplus. Terima kasih kepada seluruh mitra dan relawan!</p>
+            <div class="article-card-footer">
+              <div class="article-author">
+                <div class="article-author-avatar">A</div>
+                Admin
+              </div>
+              <button class="btn-read-more" onclick="showToast('Membuka artikel lengkap...')">Baca Selengkapnya</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Article Card 6 -->
+        <div class="article-card" data-news-category="tips">
+          <div class="article-card-img img-tips">
+            📊
+            <span class="article-category-tag tag-tips">Tips Mitra</span>
+          </div>
+          <div class="article-card-body">
+            <h4>Optimalkan Dashboard Mitra: Fitur Tracking & Laporan Donasi</h4>
+            <p class="article-snippet">Pelajari bagaimana fitur-fitur dashboard mitra donor seperti riwayat donasi, real-time tracking, dan laporan bulanan dapat membantu efisiensi operasional restoran kamu.</p>
+            <div class="article-card-footer">
+              <div class="article-author">
+                <div class="article-author-avatar">A</div>
+                Admin
+              </div>
+              <button class="btn-read-more" onclick="showToast('Membuka artikel lengkap...')">Baca Selengkapnya</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ================================================
+     TAB: ADMIN PANEL DASHBOARD (FULL OVERHAUL)
+================================================ -->
+<div class="page-section" id="page-admin">
+  <div class="admin-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-header">
+        <div class="admin-avatar">🛡️</div>
+        <h5>Administrator</h5>
+        <span>Super Admin</span>
+      </div>
+
+      <ul class="admin-sidebar-nav">
+        <li class="active" onclick="showAdminSubTab('overview', this)">
+          <span class="nav-icon">📊</span>
+          Overview & Validasi
+          <span class="nav-badge" id="sidebarPendingBadge">3</span>
+        </li>
+        <li onclick="showAdminSubTab('berita', this)">
+          <span class="nav-icon">📰</span>
+          Manajemen Berita
+        </li>
+        <li onclick="showAdminSubTab('pengguna', this)">
+          <span class="nav-icon">👥</span>
+          Kelola Pengguna
+        </li>
+      </ul>
+
+      <div class="admin-sidebar-footer">
+        <p>FoodShare Admin v1.0<br>© 2026 Balikpapan</p>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main">
+
+      <!-- ============================
+           SUB-TAB 1: OVERVIEW & VALIDASI
+      ============================ -->
+      <div class="admin-sub-page active" id="adminSubOverview">
+        <div class="admin-page-header">
+          <div>
+            <h2>📊 Overview & Validasi Klaim</h2>
+            <p>Pusat kendali statistik dan validasi pengajuan klaim makanan</p>
+          </div>
+          <div class="user-profile-badge">
+            <div class="user-avatar-sm" style="background-color: var(--accent2);">A</div>
+            <div>
+              <div class="fw-bold" style="font-size:0.85rem">Administrator</div>
+              <small class="text-muted" style="font-size:0.75rem">Level: Super Admin</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="admin-stats-grid">
+          <div class="stat-box">
+            <div class="stat-icon-wrapper orange">🍽️</div>
+            <div class="stat-num-val" id="adminStatPorsi">247</div>
+            <div class="stat-lbl">Total Porsi Diselamatkan</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-icon-wrapper green">🏪</div>
+            <div class="stat-num-val">12</div>
+            <div class="stat-lbl">Mitra Donor Aktif</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-icon-wrapper blue">🏛️</div>
+            <div class="stat-num-val">8</div>
+            <div class="stat-lbl">Lembaga Terdaftar</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-icon-wrapper gold">⏳</div>
+            <div class="stat-num-val" id="adminStatPending">3</div>
+            <div class="stat-lbl">Klaim Pending</div>
+          </div>
+        </div>
+
+        <!-- Validation Table -->
+        <div class="data-table-wrapper">
+          <div class="data-table-header">
+            <h5>📋 Validasi Pengajuan Klaim Pending</h5>
+            <span class="badge-pending-honey" id="validationPendingBadge">3 Menunggu Validasi</span>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID Klaim</th>
+                  <th>Makanan / Sumber</th>
+                  <th>Pemohon Klaim</th>
+                  <th>Jumlah</th>
+                  <th>Status</th>
+                  <th style="text-align:center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="adminValidationTable">
+                <tr>
+                  <td><strong>#KL-001</strong></td>
+                  <td>
+                    <strong>🍱 Nasi Box Ayam Goreng</strong><br>
+                    <small class="text-muted">Restoran Sederhana</small>
+                  </td>
+                  <td>
+                    <strong>Yayasan Peduli Sesama</strong><br>
+                    <small class="text-muted">lembaga_id: 3</small>
+                  </td>
+                  <td>15 Porsi</td>
+                  <td><span class="badge-pending-honey">Pending</span></td>
+                  <td style="text-align:center">
+                    <div class="action-btn-group justify-content-center">
+                      <button class="btn-sage" onclick="processAdminValidationRow(1, 'approved', 15)">✓ Setujui</button>
+                      <button class="btn-danger-custom" onclick="processAdminValidationRow(1, 'rejected', 0)">✗ Tolak</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>#KL-002</strong></td>
+                  <td>
+                    <strong>🍞 Roti Tawar & Selai</strong><br>
+                    <small class="text-muted">Restoran Sederhana</small>
+                  </td>
+                  <td>
+                    <strong>Panti Asuhan Harapan Bangsa</strong><br>
+                    <small class="text-muted">lembaga_id: 4</small>
+                  </td>
+                  <td>20 Bungkus</td>
+                  <td><span class="badge-pending-honey">Pending</span></td>
+                  <td style="text-align:center">
+                    <div class="action-btn-group justify-content-center">
+                      <button class="btn-sage" onclick="processAdminValidationRow(2, 'approved', 20)">✓ Setujui</button>
+                      <button class="btn-danger-custom" onclick="processAdminValidationRow(2, 'rejected', 0)">✗ Tolak</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>#KL-003</strong></td>
+                  <td>
+                    <strong>🧃 Es Teh & Jus Kemasan</strong><br>
+                    <small class="text-muted">Restoran Sederhana</small>
+                  </td>
+                  <td>
+                    <strong>Komunitas Berbagi Samarinda</strong><br>
+                    <small class="text-muted">lembaga_id: 5</small>
+                  </td>
+                  <td>10 Botol</td>
+                  <td><span class="badge-pending-honey">Pending</span></td>
+                  <td style="text-align:center">
+                    <div class="action-btn-group justify-content-center">
+                      <button class="btn-sage" onclick="processAdminValidationRow(3, 'approved', 10)">✓ Setujui</button>
+                      <button class="btn-danger-custom" onclick="processAdminValidationRow(3, 'rejected', 0)">✗ Tolak</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ============================
+           SUB-TAB 2: MANAJEMEN CRUD BERITA
+      ============================ -->
+      <div class="admin-sub-page" id="adminSubBerita">
+        <div class="admin-page-header">
+          <div>
+            <h2>📰 Manajemen Berita & Artikel</h2>
+            <p>Kelola seluruh konten berita, edukasi, dan informasi kegiatan sosial</p>
+          </div>
+          <button class="btn-honey" onclick="openArticleModal('create')">+ Tulis Artikel Baru</button>
+        </div>
+
+        <!-- Article Admin Table -->
+        <div class="data-table-wrapper">
+          <div class="data-table-header">
+            <h5>📄 Daftar Artikel Terpublikasi</h5>
+            <span class="badge-published" id="totalArticleBadge">6 Artikel Aktif</span>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table" id="adminArticleTable">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Judul Artikel</th>
+                  <th>Kategori</th>
+                  <th>Penulis</th>
+                  <th>Tanggal</th>
+                  <th>Status</th>
+                  <th style="text-align:center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="adminArticleBody">
+                <tr data-article-id="1">
+                  <td>1</td>
+                  <td><strong>5 Cara Restoran Mengurangi Food Waste di Kota Balikpapan</strong></td>
+                  <td><span class="article-category-tag tag-edukasi" style="position:static">Edukasi</span></td>
+                  <td>Admin</td>
+                  <td>28 Mei 2026</td>
+                  <td><span class="badge-published">Terbit</span></td>
+                  <td style="text-align:center">
+                    <div class="action-btn-group justify-content-center">
+                      <button class="btn-info-pastel" onclick="previewArticle(1)">👁 Lihat</button>
+                      <button class="btn-edit-pastel" onclick="openArticleModal('edit', 1)">✏ Edit</button>
+                      <button class="btn-danger-pastel" onclick="confirmDeleteArticle(1)">🗑 Hapus</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-article-id="2">
+                  <td>2</td>
+                  <td><strong>Mengapa 1/3 Makanan Dunia Terbuang Sia-Sia? Fakta & Solusi</strong></td>
+                  <td><span class="article-category-tag tag-edukasi" style="position:static">Edukasi</span></td>
+                  <td>Admin</td>
+                  <td>25 Mei 2026</td>
+                  <td><span class="badge-published">Terbit</span></td>
+                  <td style="text-align:center">
+                    <div class="action-btn-group justify-content-center">
+                      <button class="btn-info-pastel" onclick="previewArticle(2)">👁 Lihat</button>
+                      <button class="btn-edit-pastel" onclick="openArticleModal('edit', 2)">✏ Edit</button>
+                      <button class="btn-danger-pastel" onclick="confirmDeleteArticle(2)">🗑 Hapus</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-article-id="3">
+                  <td>3</td>
+                  <td><strong>Panti Asuhan Harapan Bangsa Terima 150 Porsi dari Program FoodShare</strong></td>
+                  <td><span class="article-category-tag tag-sosial" style="position:static">Kegiatan Sosial</span></td>
+                  <td>Admin</td>
+                  <td>22 Mei 2026</td>
+                  <td><span class="badge-published">Terbit</span></td>
+                  <td style="text-align:center">
+                    <div class="action-btn-group justify-content-center">
+                      <button class="btn-info-pastel" onclick="previewArticle(3)">👁 Lihat</button>
+                      <button class="btn-edit-pastel" onclick="openArticleModal('edit', 3)">✏ Edit</button>
+                      <button class="btn-danger-pastel" onclick="confirmDeleteArticle(3)">🗑 Hapus</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-article-id="4">
+                  <td>4</td>
+                  <td><strong>Panduan Mitra Donor: Cara Input Surplus Makanan dengan Benar</strong></td>
+                  <td><span class="article-category-tag tag-tips" style="position:static">Tips Mitra</span></td>
+                  <td>Admin</td>
+                  <td>20 Mei 2026</td>
+                  <td><span class="badge-published">Terbit</span></td>
+                  <td style="text-align:center">
+                    <div class="action-btn-group justify-content-center">
+                      <button class="btn-info-pastel" onclick="previewArticle(4)">👁 Lihat</button>
+                      <button class="btn-edit-pastel" onclick="openArticleModal('edit', 4)">✏ Edit</button>
+                      <button class="btn-danger-pastel" onclick="confirmDeleteArticle(4)">🗑 Hapus</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-article-id="5">
+                  <td>5</td>
+                  <td><strong>SDGs Goal 12: Konsumsi & Produksi Bertanggung Jawab</strong></td>
+                  <td><span class="article-category-tag tag-edukasi" style="position:static">Edukasi</span></td>
+                  <td>Admin</td>
+                  <td>18 Mei 2026</td>
+                  <td><span class="badge-published">Terbit</span></td>
+                  <td style="text-align:center">
+                    <div class="action-btn-group justify-content-center">
+                      <button class="btn-info-pastel" onclick="previewArticle(5)">👁 Lihat</button>
+                      <button class="btn-edit-pastel" onclick="openArticleModal('edit', 5)">✏ Edit</button>
+                      <button class="btn-danger-pastel" onclick="confirmDeleteArticle(5)">🗑 Hapus</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr data-article-id="6">
+                  <td>6</td>
+                  <td><strong>Perayaan Milestone: 200+ Porsi Terselamatkan di Bulan Pertama!</strong></td>
+                  <td><span class="article-category-tag tag-sosial" style="position:static">Kegiatan Sosial</span></td>
+                  <td>Admin</td>
+                  <td>15 Mei 2026</td>
+                  <td><span class="badge-published">Terbit</span></td>
+                  <td style="text-align:center">
+                    <div class="action-btn-group justify-content-center">
+                      <button class="btn-info-pastel" onclick="previewArticle(6)">👁 Lihat</button>
+                      <button class="btn-edit-pastel" onclick="openArticleModal('edit', 6)">✏ Edit</button>
+                      <button class="btn-danger-pastel" onclick="confirmDeleteArticle(6)">🗑 Hapus</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ============================
+           SUB-TAB 3: KELOLA PENGGUNA
+      ============================ -->
+      <div class="admin-sub-page" id="adminSubPengguna">
+        <div class="admin-page-header">
+          <div>
+            <h2>👥 Kelola Pengguna & Akun Terdaftar</h2>
+            <p>Monitoring seluruh akun mitra donor dan lembaga sosial yang terdaftar dalam sistem</p>
+          </div>
+        </div>
+
+        <!-- Donor Accounts -->
+        <div class="data-table-wrapper mb-4">
+          <div class="data-table-header">
+            <h5>🏪 Akun Mitra Donor</h5>
+            <span class="badge-role-donor">4 Akun Terdaftar</span>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nama Usaha</th>
+                  <th>Email</th>
+                  <th>Alamat</th>
+                  <th>Total Donasi</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>#D-001</td>
+                  <td>
+                    <strong>Restoran Sederhana</strong><br>
+                    <small class="text-muted">Pemilik: Pak Haji Salam</small>
+                  </td>
+                  <td>sederhana@foodshare.id</td>
+                  <td>Jl. Sudirman No. 45, Balikpapan</td>
+                  <td><strong>120 porsi</strong></td>
+                  <td><span class="badge-verified">✓ Verified</span></td>
+                </tr>
+                <tr>
+                  <td>#D-002</td>
+                  <td>
+                    <strong>Katering Berkah Sejahtera</strong><br>
+                    <small class="text-muted">Pemilik: Ibu Siti Rahmah</small>
+                  </td>
+                  <td>berkah@foodshare.id</td>
+                  <td>Jl. MT Haryono No. 12, Balikpapan</td>
+                  <td><strong>85 porsi</strong></td>
+                  <td><span class="badge-verified">✓ Verified</span></td>
+                </tr>
+                <tr>
+                  <td>#D-003</td>
+                  <td>
+                    <strong>Bakery Manis Hati</strong><br>
+                    <small class="text-muted">Pemilik: Pak Ahmad Bakrie</small>
+                  </td>
+                  <td>manishati@foodshare.id</td>
+                  <td>Jl. A. Yani No. 78, Balikpapan</td>
+                  <td><strong>42 porsi</strong></td>
+                  <td><span class="badge-verified">✓ Verified</span></td>
+                </tr>
+                <tr>
+                  <td>#D-004</td>
+                  <td>
+                    <strong>Warung Nasi Ibu Eni</strong><br>
+                    <small class="text-muted">Pemilik: Ibu Eni Sustina</small>
+                  </td>
+                  <td>warungeni@foodshare.id</td>
+                  <td>Jl. Letjend Suprapto No. 33, Balikpapan</td>
+                  <td><strong>28 porsi</strong></td>
+                  <td><span class="badge-verified">✓ Verified</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Lembaga Accounts -->
+        <div class="data-table-wrapper">
+          <div class="data-table-header">
+            <h5>🏛️ Akun Lembaga Sosial / Penerima</h5>
+            <span class="badge-role-lembaga">4 Akun Terdaftar</span>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nama Lembaga</th>
+                  <th>Email</th>
+                  <th>Alamat</th>
+                  <th>Total Diterima</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>#L-001</td>
+                  <td>
+                    <strong>Panti Asuhan Harapan Bangsa</strong><br>
+                    <small class="text-muted">Ketua: Bapak Sudirman</small>
+                  </td>
+                  <td>harapan@foodshare.id</td>
+                  <td>Jl. Mulawarman No. 22, Balikpapan</td>
+                  <td><strong>95 porsi</strong></td>
+                  <td><span class="badge-verified">✓ Verified</span></td>
+                </tr>
+                <tr>
+                  <td>#L-002</td>
+                  <td>
+                    <strong>Yayasan Peduli Sesama</strong><br>
+                    <small class="text-muted">Ketua: Ibu Nurjanah</small>
+                  </td>
+                  <td>peduli@foodshare.id</td>
+                  <td>Jl. Marsma R. Iswahyudi No. 9, Balikpapan</td>
+                  <td><strong>78 porsi</strong></td>
+                  <td><span class="badge-verified">✓ Verified</span></td>
+                </tr>
+                <tr>
+                  <td>#L-003</td>
+                  <td>
+                    <strong>Komunitas Berbagi Samarinda</strong><br>
+                    <small class="text-muted">Koordinator: Pak Reza</small>
+                  </td>
+                  <td>berbagi@foodshare.id</td>
+                  <td>Jl. Gajah Mada No. 5, Samarinda</td>
+                  <td><strong>52 porsi</strong></td>
+                  <td><span class="badge-verified">✓ Verified</span></td>
+                </tr>
+                <tr>
+                  <td>#L-004</td>
+                  <td>
+                    <strong>Rumah Singgah Kasih Ibu</strong><br>
+                    <small class="text-muted">Pengelola: Ibu Martha</small>
+                  </td>
+                  <td>kasih@foodshare.id</td>
+                  <td>Jl. Soekarno-Hatta No. 88, Balikpapan</td>
+                  <td><strong>22 porsi</strong></td>
+                  <td><span class="badge-verified">✓ Verified</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+
+<!-- ================================================
+     MODALS
+================================================ -->
+
+<!-- Modal: Create / Edit Article -->
+<div class="modal-overlay" id="modalArticleForm">
+  <div class="modal-box modal-box-lg">
+    <div class="modal-header-custom">
+      <h3 id="articleFormTitle">📝 Tulis Artikel Baru</h3>
+      <button class="modal-close-btn" onclick="closeModal('modalArticleForm')">✕</button>
+    </div>
+    <div class="modal-body-custom">
+      <form id="articleForm" onsubmit="submitArticleForm(event)">
+        <div class="honey-input-group">
+          <label for="articleTitle">Judul Artikel</label>
+          <input type="text" class="honey-input" id="articleTitle" placeholder="Masukkan judul artikel..." required>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="honey-input-group">
+              <label for="articleCategory">Kategori</label>
+              <select class="honey-select" id="articleCategory" required>
+                <option value="">Pilih Kategori</option>
+                <option value="edukasi">Edukasi</option>
+                <option value="sosial">Kegiatan Sosial</option>
+                <option value="tips">Tips Mitra</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="honey-input-group">
+              <label for="articleAuthor">Penulis</label>
+              <input type="text" class="honey-input" id="articleAuthor" value="Admin" readonly>
+            </div>
+          </div>
+        </div>
+        <div class="honey-input-group">
+          <label for="articleContent">Konten Utama / Isi Berita</label>
+          <textarea class="honey-textarea" id="articleContent" placeholder="Tulis isi artikel di sini..." required></textarea>
+        </div>
+        <div class="honey-input-group">
+          <label>Unggah Gambar</label>
+          <div class="file-upload-zone" onclick="document.getElementById('articleImageInput').click()">
+            <div class="upload-icon">📁</div>
+            <p id="articleImageLabel">Klik atau seret gambar ke area ini<br><small>Format: JPG, PNG, WebP (Maks. 2MB)</small></p>
+            <input type="file" id="articleImageInput" accept="image/*" style="display:none" onchange="handleImageUpload(this)">
+          </div>
+        </div>
+        <input type="hidden" id="articleEditId" value="">
+      </form>
+    </div>
+    <div class="modal-footer-custom">
+      <button class="btn-honey-outline" onclick="closeModal('modalArticleForm')">Batal</button>
+      <button class="btn-honey" onclick="document.getElementById('articleForm').requestSubmit()">
+        <span id="articleSubmitText">🚀 Terbitkan</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Preview Article -->
+<div class="modal-overlay" id="modalArticlePreview">
+  <div class="modal-box modal-box-lg">
+    <div class="modal-header-custom">
+      <h3>👁 Preview Artikel</h3>
+      <button class="modal-close-btn" onclick="closeModal('modalArticlePreview')">✕</button>
+    </div>
+    <div class="modal-body-custom">
+      <div class="preview-article-img" id="previewImg">📰</div>
+      <div class="preview-article-meta" id="previewMeta">
+        <span class="article-category-tag tag-edukasi" style="position:static" id="previewCategory">Edukasi</span>
+        <span style="font-size:0.85rem; color:var(--dark-muted);" id="previewDate">📅 28 Mei 2026</span>
+        <span style="font-size:0.85rem; color:var(--dark-muted);" id="previewAuthor">📝 Admin</span>
+      </div>
+      <h2 style="font-weight:800; font-size:1.6rem; margin-bottom:16px;" id="previewTitle">Judul Artikel</h2>
+      <div class="preview-article-content" id="previewContent">
+        Konten artikel akan ditampilkan di sini...
+      </div>
+    </div>
+    <div class="modal-footer-custom">
+      <button class="btn-honey-outline" onclick="closeModal('modalArticlePreview')">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Delete Confirmation -->
+<div class="modal-overlay" id="modalDeleteConfirm">
+  <div class="modal-box" style="max-width: 480px;">
+    <div class="modal-header-custom">
+      <h3>⚠️ Konfirmasi Hapus</h3>
+      <button class="modal-close-btn" onclick="closeModal('modalDeleteConfirm')">✕</button>
+    </div>
+    <div class="modal-body-custom">
+      <div class="delete-confirm-content">
+        <div class="delete-icon">🗑️</div>
+        <h4>Apakah Anda yakin ingin menghapus artikel ini?</h4>
+        <p id="deleteArticleTitle">Nama artikel akan ditampilkan di sini</p>
+        <p style="font-size: 0.82rem; color: #E74C3C; margin-top: 8px;">Tindakan ini tidak dapat dibatalkan.</p>
+      </div>
+    </div>
+    <div class="modal-footer-custom">
+      <button class="btn-honey-outline" onclick="closeModal('modalDeleteConfirm')">Batal</button>
+      <button class="btn-danger-custom" id="confirmDeleteBtn" onclick="executeDeleteArticle()">🗑 Ya, Hapus Artikel</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ================================================
+     BOOTSTRAP MODAL: INPUT DONASI (DONOR CREATE FOOD)
+================================================ -->
+<div class="modal fade" id="inputDonasiModal" tabindex="-1" aria-labelledby="inputDonasiModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content" style="border-radius: var(--radius-lg); border: none; overflow: hidden;">
+      <div class="modal-header" style="background: var(--bg-warm); border-bottom: 1px solid rgba(56,38,21,0.06); padding: 24px 32px;">
+        <h5 class="modal-title fw-bold" id="inputDonasiModalLabel" style="font-size:1.2rem;">🍱 Tambah Makanan Surplus Baru</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="background: var(--bg-warm); padding: 28px 32px;">
+        <form id="inputDonasiForm">
+          <div class="honey-input-group">
+            <label for="donorFoodNameInput">Nama Hidangan / Makanan Surplus</label>
+            <input type="text" class="honey-input" id="donorFoodNameInput" placeholder="Contoh: Nasi Box Ikan Bakar, Roti Coklat..." required>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="honey-input-group">
+                <label for="donorFoodQtyInput">Jumlah / Kuantitas</label>
+                <input type="number" class="honey-input" id="donorFoodQtyInput" placeholder="30" min="1" required>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="honey-input-group">
+                <label for="donorFoodUnitInput">Satuan</label>
+                <select class="honey-select" id="donorFoodUnitInput">
+                  <option value="porsi">porsi</option>
+                  <option value="pcs">pcs</option>
+                  <option value="bungkus">bungkus</option>
+                  <option value="kotak">kotak</option>
+                  <option value="botol">botol</option>
+                  <option value="kg">kg</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="honey-input-group">
+                <label for="donorFoodExpInput">Estimasi Kedaluwarsa (Jam)</label>
+                <input type="number" class="honey-input" id="donorFoodExpInput" placeholder="6" min="1" value="6" required>
+              </div>
+            </div>
+          </div>
+          <div class="honey-input-group">
+            <label for="donorFoodCategorySelect">Kategori Makanan</label>
+            <select class="honey-select" id="donorFoodCategorySelect" required>
+              <option value="makanan_berat">🍱 Makanan Berat</option>
+              <option value="roti">🍞 Roti & Kue</option>
+              <option value="snack">🍩 Snack & Camilan</option>
+              <option value="minuman">🧃 Minuman</option>
+            </select>
+          </div>
+          <div class="honey-input-group">
+            <label for="donorFoodDescriptionInput">Keterangan Tambahan (Opsional)</label>
+            <textarea class="honey-textarea" id="donorFoodDescriptionInput" placeholder="Misal: Dikemas higienis, bebas alergen, cocok untuk semua usia..." style="min-height:100px;"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer" style="background: var(--bg-warm); border-top: 1px solid rgba(56,38,21,0.06); padding: 20px 32px; gap: 12px;">
+        <button type="button" class="btn-honey-outline" data-bs-dismiss="modal">Batal</button>
+        <button type="button" class="btn-honey" onclick="document.getElementById('inputDonasiForm').requestSubmit()">🚀 Bagikan Surplus Sekarang</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ================================================
+     TOAST NOTIFICATION
+================================================ -->
+<div class="toast-notification" id="toastNotification">
+  <span class="toast-icon" id="toastIcon">✅</span>
+  <span class="toast-text" id="toastText">Operasi berhasil!</span>
+</div>
+
+
+<script>
+  // =============================================
+  // 1. SIMULATED DATABASES (In-Memory Arrays)
+  // =============================================
+  const articlesDB = [
+    {
+      id: 1,
+      title: '5 Cara Restoran Mengurangi Food Waste di Kota Balikpapan',
+      category: 'edukasi',
+      author: 'Admin',
+      date: '28 Mei 2026',
+      status: 'published',
+      emoji: '📰',
+      content: 'Pelajari strategi nyata yang telah diterapkan oleh mitra donor FoodShare dalam mengurangi limbah makanan hingga 40% setiap bulannya. Mulai dari perencanaan porsi yang cermat, kolaborasi dengan lembaga sosial setempat, hingga penggunaan teknologi real-time tracking untuk memastikan distribusi makanan tepat waktu dan tepat sasaran.\n\nBeberapa langkah yang bisa diterapkan:\n1. Audit harian terhadap sisa makanan\n2. Sistem pre-order untuk mengurangi kelebihan produksi\n3. Kemitraan dengan platform distribusi surplus\n4. Pelatihan karyawan tentang food waste management\n5. Donasi surplus ke lembaga sosial terdekat',
+      snippet: 'Pelajari strategi nyata yang telah diterapkan oleh mitra donor FoodShare dalam mengurangi limbah makanan hingga 40%...'
+    },
+    {
+      id: 2,
+      title: 'Mengapa 1/3 Makanan Dunia Terbuang Sia-Sia? Fakta & Solusi',
+      category: 'edukasi',
+      author: 'Admin',
+      date: '25 Mei 2026',
+      status: 'published',
+      emoji: '🥗',
+      content: 'Menurut FAO (Food and Agriculture Organization), sekitar 1.3 miliar ton makanan terbuang per tahun secara global — itu setara dengan sepertiga dari total produksi pangan dunia. Indonesia sendiri menyumbang 23-48 juta ton sampah makanan per tahun.\n\nArtikel ini mengupas penyebab utama food waste di berbagai level: dari produksi pertanian, distribusi, ritel, hingga konsumen akhir. Serta bagaimana platform seperti FoodShare dapat menjadi solusi nyata untuk menghubungkan surplus makanan dengan mereka yang membutuhkan.',
+      snippet: 'Menurut FAO, sekitar 1.3 miliar ton makanan terbuang per tahun secara global. Artikel ini mengupas penyebab utama...'
+    },
+    {
+      id: 3,
+      title: 'Panti Asuhan Harapan Bangsa Terima 150 Porsi dari Program FoodShare',
+      category: 'sosial',
+      author: 'Admin',
+      date: '22 Mei 2026',
+      status: 'published',
+      emoji: '🤝',
+      content: 'Minggu lalu, tim FoodShare berhasil menyalurkan 150 porsi nasi box dari Restoran Sederhana ke Panti Asuhan Harapan Bangsa di Jl. Mulawarman No. 22, Balikpapan.\n\nKegiatan ini merupakan bagian dari program rutin distribusi surplus makanan yang dilakukan setiap akhir pekan. Anak-anak dan pengasuh di panti asuhan sangat senang menerima makanan hangat berkualitas tinggi yang biasanya hanya tersedia di restoran premium.\n\n"Kami sangat bersyukur dengan adanya program ini. Anak-anak kami bisa menikmati makanan enak dan bergizi," ujar Bapak Sudirman, Ketua Panti Asuhan Harapan Bangsa.',
+      snippet: 'Minggu lalu, tim FoodShare berhasil menyalurkan 150 porsi nasi box dari Restoran Sederhana ke Panti Asuhan Harapan Bangsa...'
+    },
+    {
+      id: 4,
+      title: 'Panduan Mitra Donor: Cara Input Surplus Makanan dengan Benar',
+      category: 'tips',
+      author: 'Admin',
+      date: '20 Mei 2026',
+      status: 'published',
+      emoji: '💡',
+      content: 'Untuk memastikan makanan surplus kamu tepat sasaran dan terdistribusi dengan baik, ikuti panduan lengkap berikut:\n\n1. Login ke dashboard Mitra Donor\n2. Klik tombol "Input Donasi Baru"\n3. Isi nama hidangan, kategori (makanan berat/roti/snack/minuman)\n4. Tentukan jumlah porsi yang tersedia\n5. Set estimasi masa kedaluwarsa (dalam jam)\n6. Upload foto makanan untuk verifikasi kualitas\n7. Klik "Simpan & Publikasikan"\n\nMakanan akan langsung tampil di katalog dan siap diklaim oleh lembaga sosial terdekat.',
+      snippet: 'Untuk memastikan makanan surplus kamu tepat sasaran, ikuti panduan lengkap input data melalui dashboard Mitra Donor...'
+    },
+    {
+      id: 5,
+      title: 'SDGs Goal 12: Konsumsi & Produksi Bertanggung Jawab dan Peran Kita',
+      category: 'edukasi',
+      author: 'Admin',
+      date: '18 Mei 2026',
+      status: 'published',
+      emoji: '🌍',
+      content: 'Sustainable Development Goals (SDGs) nomor 12 berfokus pada pola konsumsi dan produksi yang berkelanjutan. Target 12.3 secara spesifik menyebutkan: "Pada tahun 2030, mengurangi separuh limbah pangan per kapita global di tingkat ritel dan konsumen."\n\nGerakan zero food waste yang difasilitasi oleh FoodShare berkontribusi langsung pada pencapaian target global ini dengan:\n- Mengurangi limbah makanan dari sektor komersial\n- Mendistribusikan surplus ke komunitas yang membutuhkan\n- Menciptakan awareness tentang food waste di masyarakat',
+      snippet: 'SDGs nomor 12 berfokus pada pola konsumsi berkelanjutan. Simak bagaimana gerakan zero food waste berkontribusi...'
+    },
+    {
+      id: 6,
+      title: 'Perayaan Milestone: 200+ Porsi Terselamatkan di Bulan Pertama!',
+      category: 'sosial',
+      author: 'Admin',
+      date: '15 Mei 2026',
+      status: 'published',
+      emoji: '🎉',
+      content: 'Dalam kurun waktu sebulan sejak peluncuran resmi, platform FoodShare berhasil memfasilitasi penyelamatan lebih dari 200 porsi makanan surplus dari berbagai mitra donor di Balikpapan.\n\nCapaian ini tidak terlepas dari dukungan penuh para mitra donor seperti Restoran Sederhana, Katering Berkah Sejahtera, Bakery Manis Hati, dan Warung Nasi Ibu Eni. Serta lembaga penerima seperti Panti Asuhan Harapan Bangsa dan Yayasan Peduli Sesama.\n\nTerima kasih kepada seluruh pihak yang telah berpartisipasi! Mari kita lanjutkan gerakan ini dan selamatkan lebih banyak makanan lagi! 🌱',
+      snippet: 'Dalam kurun waktu sebulan sejak peluncuran, platform FoodShare berhasil memfasilitasi penyelamatan lebih dari 200 porsi...'
+    }
+  ];
+
+  const foodDB = [
+    { id: 1, name: 'Nasi Box Ayam Goreng', category: 'makanan_berat', donor: 'Restoran Sederhana', quantity: 30, unit: 'porsi', emoji: '🍱', hrsLeft: 4, status: 'available' },
+    { id: 2, name: 'Roti Tawar & Selai', category: 'roti', donor: 'Restoran Sederhana', quantity: 50, unit: 'bungkus', emoji: '🍞', hrsLeft: 12, status: 'available' },
+    { id: 3, name: 'Es Teh & Jus Kemasan', category: 'minuman', donor: 'Restoran Sederhana', quantity: 40, unit: 'botol', emoji: '🧃', hrsLeft: 24, status: 'available' },
+    { id: 4, name: 'Warm Croissants', category: 'roti', donor: 'Bakery Makmur Jaya', quantity: 25, unit: 'pcs', emoji: '🥐', hrsLeft: 3, status: 'available' },
+    { id: 5, name: 'Donat Aneka Toping', category: 'snack', donor: 'Bakery Makmur Jaya', quantity: 60, unit: 'pcs', emoji: '🍩', hrsLeft: 6, status: 'available' },
+    { id: 6, name: 'Susu Kotak UHT', category: 'minuman', donor: 'Supermarket Sejahtera', quantity: 100, unit: 'kotak', emoji: '🥤', hrsLeft: 48, status: 'available' }
+  ];
+
+  const claimsDB = [
+    {
+      id: 1,
+      foodId: 1,
+      foodName: 'Nasi Box Ayam Goreng',
+      category: 'makanan_berat',
+      donorName: 'Restoran Sederhana',
+      lembagaName: 'Yayasan Peduli Sesama',
+      lembagaId: 3,
+      qty: 15,
+      method: 'delivery',
+      notes: 'Mohon bantuan kurir relawan untuk mendistribusikan ke panti asuhan.',
+      status: 'pending',
+      time: '09:15 WITA',
+      volunteerName: 'Budi Santoso',
+      volunteerPhone: '081299887766',
+      notesCourier: 'Menunggu verifikasi admin untuk ditugaskan.'
+    },
+    {
+      id: 2,
+      foodId: 2,
+      foodName: 'Roti Tawar & Selai',
+      category: 'roti',
+      donorName: 'Restoran Sederhana',
+      lembagaName: 'Panti Asuhan Harapan Bangsa',
+      lembagaId: 4,
+      qty: 20,
+      method: 'pickup',
+      notes: 'Lembaga akan mengambil langsung sore ini.',
+      status: 'pending',
+      time: '09:20 WITA',
+      volunteerName: 'Budi Santoso',
+      volunteerPhone: '081299887766',
+      notesCourier: 'Menunggu verifikasi admin.'
+    },
+    {
+      id: 3,
+      foodId: 3,
+      foodName: 'Es Teh & Jus Kemasan',
+      category: 'minuman',
+      donorName: 'Restoran Sederhana',
+      lembagaName: 'Komunitas Berbagi Samarinda',
+      lembagaId: 5,
+      qty: 10,
+      method: 'delivery',
+      notes: 'Sangat dibutuhkan untuk penanganan balita kurang gizi.',
+      status: 'pending',
+      time: '09:25 WITA',
+      volunteerName: 'Budi Santoso',
+      volunteerPhone: '081299887766',
+      notesCourier: 'Menunggu verifikasi admin.'
+    }
+  ];
+
+  let articleIdCounter = articlesDB.length;
+  let foodIdCounter = foodDB.length;
+  let claimIdCounter = claimsDB.length;
+  let deleteTargetId = null;
+
+  // Active configurations
+  let donorConfig = {
+    name: 'Restoran Sederhana',
+    phone: '0812-3456-7890',
+    address: 'Jl. Jenderal Sudirman No. 45, Balikpapan'
+  };
+
+
+  // =============================================
+  // 2. TAB NAVIGATION
+  // =============================================
+  function showTab(tabId) {
+    // Hide all pages
+    document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-trigger').forEach(t => t.classList.remove('active'));
+
+    const tabMap = {
+      'landing': { page: 'page-landing', btn: 'tabBtnLanding' },
+      'donor': { page: 'page-donor', btn: 'tabBtnDonor' },
+      'catalog': { page: 'page-catalog', btn: 'tabBtnCatalog' },
+      'claim': { page: 'page-claim', btn: 'tabBtnClaim' },
+      'news': { page: 'page-news', btn: 'tabBtnNews' },
+
+      'admin': { page: 'page-admin', btn: 'tabBtnAdmin' }
+    };
+
+    const target = tabMap[tabId];
+    if (target) {
+      document.getElementById(target.page).classList.add('active');
+      document.getElementById(target.btn).classList.add('active');
+    }
+
+    // Refresh pages view with database
+    if (tabId === 'catalog') {
+      refreshCatalogGrid();
+    } else if (tabId === 'landing') {
+      refreshLandingStock();
+    } else if (tabId === 'donor') {
+      loadDonorDashboard();
+    } else if (tabId === 'claim') {
+      loadClaimsTimeline();
+    } else if (tabId === 'admin') {
+      loadAdminPanel();
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+
+  // =============================================
+  // 3. MITRA DONOR SIMULATION
+  // =============================================
+  function switchDonorSubPage(subpageName, clickedLi) {
+    // Hide all donor subpages
+    document.querySelectorAll('.donor-subpage').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('#page-donor .sidebar-menu li').forEach(li => li.classList.remove('active'));
+
+    const subMap = {
+      'summary': 'donor-subpage-summary',
+      'food': 'donor-subpage-food',
+      'log': 'donor-subpage-log',
+      'config': 'donor-subpage-config'
+    };
+
+    if (subMap[subpageName]) {
+      document.getElementById(subMap[subpageName]).classList.add('active');
+    }
+    if (clickedLi) {
+      clickedLi.classList.add('active');
+    }
+
+    // Adjust title text
+    const titleText = {
+      'summary': 'Ringkasan Data 📊',
+      'food': 'Kelola Makanan Saya 🍞',
+      'log': 'Riwayat Log Klaim 🕒',
+      'config': 'Konfigurasi Toko ⚙️'
+    };
+    document.getElementById('donorDashboardTitle').innerHTML = titleText[subpageName] || 'Dashboard Mitra';
+  }
+
+  function loadDonorDashboard() {
+    // Populate config fields
+    document.getElementById('configDonorNameInput').value = donorConfig.name;
+    document.getElementById('configDonorPhoneInput').value = donorConfig.phone;
+    document.getElementById('configDonorAddressInput').value = donorConfig.address;
+    document.getElementById('donorSidebarName').innerText = donorConfig.name;
+    document.getElementById('donorProfileName').innerText = donorConfig.name + ' Balikpapan';
+
+    // Get donor specific food
+    const donorFood = foodDB.filter(f => f.donor === donorConfig.name);
+    
+    // Update summary counters
+    document.getElementById('donorStatTotal').innerText = donorFood.reduce((acc, f) => acc + f.quantity, 0) + 120;
+    document.getElementById('donorStatActive').innerText = donorFood.filter(f => f.status === 'available').length;
+
+    // Render table summary (latest 3)
+    const summaryBody = document.getElementById('riwayatDonasiBody');
+    summaryBody.innerHTML = '';
+    donorFood.slice(0, 3).forEach(f => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td><strong>${f.emoji} ${f.name}</strong></td>
+        <td>${f.quantity} ${f.unit}</td>
+        <td><span class="category-pill">${f.category}</span></td>
+        <td><span class="badge-status available">${f.status.toUpperCase()}</span></td>
+        <td>⏰ ${f.hrsLeft} Jam Lagi</td>
+      `;
+      summaryBody.appendChild(row);
+    });
+
+    // Render table full
+    const fullBody = document.getElementById('riwayatDonasiFullBody');
+    fullBody.innerHTML = '';
+    donorFood.forEach(f => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td><strong>${f.emoji} ${f.name}</strong></td>
+        <td>${f.quantity} ${f.unit}</td>
+        <td><span class="category-pill">${f.category}</span></td>
+        <td><span class="badge-status available">${f.status.toUpperCase()}</span></td>
+        <td>⏰ ${f.hrsLeft} Jam Lagi</td>
+        <td style="text-align:center">
+          <button class="btn-danger-pastel btn btn-sm rounded-pill" onclick="deleteDonorFood(${f.id})">🗑 Hapus</button>
+        </td>
+      `;
+      fullBody.appendChild(row);
+    });
+
+    // Render donor claim logs
+    const claimLogsBody = document.getElementById('donorClaimsLogBody');
+    claimLogsBody.innerHTML = '';
+    const donorClaims = claimsDB.filter(c => c.donorName === donorConfig.name);
+    if (donorClaims.length === 0) {
+      claimLogsBody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">Belum ada riwayat klaim dari lembaga.</td></tr>`;
+    } else {
+      donorClaims.forEach(c => {
+        let statusBadge = `<span class="badge-pending-honey">Pending</span>`;
+        if (c.status === 'approved') statusBadge = `<span class="badge-verified">Approved</span>`;
+        else if (c.status === 'rejected') statusBadge = `<span class="badge-status" style="background:#FDECEA; color:#C0392B;">Rejected</span>`;
+        
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td><strong>#KL-00${c.id}</strong></td>
+          <td><strong>${c.foodName}</strong></td>
+          <td>${c.lembagaName}</td>
+          <td>${c.qty} porsi</td>
+          <td>${c.method === 'delivery' ? '🚚 Delivery' : '🚗 Pickup'}</td>
+          <td>${statusBadge}</td>
+        `;
+        claimLogsBody.appendChild(row);
+      });
+    }
+  }
+
+  function deleteDonorFood(id) {
+    const idx = foodDB.findIndex(f => f.id === id);
+    if (idx !== -1) {
+      const name = foodDB[idx].name;
+      foodDB.splice(idx, 1);
+      showToast(`🗑 Donasi "${name}" berhasil dihapus.`);
+      loadDonorDashboard();
+      refreshCatalogGrid();
+    }
+  }
+
+  function saveDonorConfig(event) {
+    event.preventDefault();
+    donorConfig.name = document.getElementById('configDonorNameInput').value;
+    donorConfig.phone = document.getElementById('configDonorPhoneInput').value;
+    donorConfig.address = document.getElementById('configDonorAddressInput').value;
+
+    showToast('✅ Pengaturan profil donor berhasil disimpan!');
+    loadDonorDashboard();
+  }
+
+
+  // =============================================
+  // 4. KATALOG INTERACTIVE GRID
+  // =============================================
+  function refreshCatalogGrid() {
+    const grid = document.getElementById('catalogFoodGrid');
+    grid.innerHTML = '';
+
+    const availables = foodDB.filter(f => f.status === 'available');
+    if (availables.length === 0) {
+      grid.innerHTML = `
+        <div class="col-12 text-center py-5">
+          <h3>📦 Persediaan Habis</h3>
+          <p class="text-muted">Semua makanan surplus saat ini telah diklaim atau kedaluwarsa.</p>
+        </div>
+      `;
+      return;
+    }
+
+    availables.forEach(f => {
+      const card = document.createElement('div');
+      card.className = 'food-card';
+      card.setAttribute('data-category', f.category);
+      card.innerHTML = `
+        <div class="food-card-img">${f.emoji}<span class="badge-floating">Tersedia</span></div>
+        <div class="food-card-body">
+          <h4>${f.name}</h4>
+          <div class="food-location">📍 ${f.donor} Balikpapan</div>
+          <div class="food-qty">${f.quantity} ${f.unit}</div>
+          <button class="btn-honey btn-card-claim" onclick="initiateClaim(${f.id}, '${f.name.replace(/'/g, "\\'")}', '${f.donor.replace(/'/g, "\\'")}', ${f.quantity}, '${f.category}', '${f.emoji}', ${f.hrsLeft})">Klaim Makanan</button>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  function filterCatalog(category) {
+    // Handle pills active state
+    document.querySelectorAll('.filter-pill').forEach(pill => {
+      pill.classList.remove('active');
+    });
+    
+    // Find pill by category
+    const clickedPill = Array.from(document.querySelectorAll('.filter-pill')).find(p => {
+      return p.getAttribute('onclick').includes(category);
+    });
+    if (clickedPill) clickedPill.classList.add('active');
+
+    // Filter items
+    const cards = document.querySelectorAll('#catalogFoodGrid .food-card');
+    cards.forEach(card => {
+      const cardCat = card.getAttribute('data-category');
+      if (category === 'semua' || cardCat === category) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  function searchCatalog(query) {
+    const q = query.toLowerCase().trim();
+    const cards = document.querySelectorAll('#catalogFoodGrid .food-card');
+    cards.forEach(card => {
+      const name = card.querySelector('h4').innerText.toLowerCase();
+      if (name.includes(q)) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  // Refresh home stock cards (maximum of 3 items)
+  function refreshLandingStock() {
+    const grid = document.getElementById('miniLiveStockGrid');
+    if (!grid) return;
+    
+    grid.innerHTML = '';
+    const availables = foodDB.filter(f => f.status === 'available').slice(0, 3);
+    
+    if (availables.length === 0) {
+      grid.innerHTML = `<div class="col-12 text-center py-3 text-muted">Tidak ada persediaan surplus aktif saat ini.</div>`;
+      return;
+    }
+
+    availables.forEach(f => {
+      const col = document.createElement('div');
+      col.className = 'col-lg-4 col-md-6';
+      col.innerHTML = `
+        <div class="live-stock-item">
+          <div class="stock-emoji">${f.emoji}</div>
+          <div class="stock-details">
+            <h5>${f.name}</h5>
+            <p>${f.donor} • ${f.quantity} ${f.unit}</p>
+          </div>
+          <span class="badge-status available">Tersedia</span>
+        </div>
+      `;
+      grid.appendChild(col);
+    });
+  }
+
+
+  // =============================================
+  // 5. CLAIM FLOW & REAL-TIME TIMELINE
+  // =============================================
+  function initiateClaim(id, name, donor, quantity, category, emoji, hrsLeft) {
+    // Populate form hidden & visible values
+    document.getElementById('claimFoodIdInput').value = id;
+    document.getElementById('detailFoodIcon').innerText = emoji;
+    document.getElementById('detailFoodName').innerText = name;
+    document.getElementById('detailFoodOrigin').innerText = `📍 ${donor} Balikpapan • donor_id: 2`;
+    document.getElementById('detailFoodQty').innerText = `🍽️ ${quantity} porsi`;
+    document.getElementById('detailFoodCategory').innerText = `📂 ${category}`;
+    document.getElementById('detailFoodExp').innerText = `⏰ Expired: ${hrsLeft} jam lagi`;
+
+    // Reset Form Max limit
+    const claimQtyInput = document.getElementById('claimQtyInput');
+    claimQtyInput.max = quantity;
+    claimQtyInput.value = Math.min(15, quantity);
+
+    // Hide success message, show form
+    document.getElementById('claimSuccessBox').style.display = 'none';
+    document.getElementById('claimFormBox').style.display = 'block';
+
+    // Show Tab Claim
+    showTab('claim');
+  }
+
+  function submitClaimForm(event) {
+    event.preventDefault();
+    const foodId = parseInt(document.getElementById('claimFoodIdInput').value);
+    const qty = parseInt(document.getElementById('claimQtyInput').value);
+    const method = document.getElementById('claimMethodSelect').value;
+    const notes = document.getElementById('claimNotesInput').value.trim();
+
+    const foodItem = foodDB.find(f => f.id === foodId);
+    if (!foodItem || foodItem.quantity < qty) {
+      showToast('⚠️ Kuantitas klaim melebihi stok yang tersedia!', true);
+      return;
+    }
+
+    // Deduct stock in DB
+    foodItem.quantity -= qty;
+    if (foodItem.quantity <= 0) {
+      foodItem.status = 'claimed';
+    }
+
+    // Add new Claim in claimsDB
+    claimIdCounter++;
+    const todayTime = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WITA';
+    const newClaim = {
+      id: claimIdCounter,
+      foodId: foodId,
+      foodName: foodItem.name,
+      category: foodItem.category,
+      donorName: foodItem.donor,
+      lembagaName: 'Panti Asuhan Harapan Bangsa',
+      lembagaId: 4,
+      qty: qty,
+      method: method,
+      notes: notes,
+      status: 'pending',
+      time: todayTime,
+      volunteerName: 'Budi Santoso',
+      volunteerPhone: '081299887766',
+      notesCourier: 'Menunggu verifikasi admin untuk ditugaskan.'
+    };
+    claimsDB.push(newClaim);
+
+    // Show Claim Success banner
+    document.getElementById('claimSuccessBox').style.display = 'block';
+    document.getElementById('claimFormBox').style.display = 'none';
+
+    // Load active timeline for this claim
+    loadClaimsTimeline();
+    renderActiveClaimTimeline(newClaim.id);
+
+    showToast('🚀 Klaim diajukan! Menunggu persetujuan admin.');
+    refreshCatalogGrid();
+  }
+
+  function loadClaimsTimeline() {
+    const activeClaims = claimsDB.filter(c => c.lembagaId === 4); // Simulated institute Harapan Bangsa
+    const selectorWrapper = document.getElementById('activeClaimSelectorWrapper');
+    const selector = document.getElementById('activeClaimSelector');
+
+    if (activeClaims.length === 0) {
+      selectorWrapper.style.display = 'none';
+      document.getElementById('distributionTimeline').innerHTML = `
+        <div class="text-center py-4 text-muted">
+          <i class="bi bi-inbox" style="font-size:2.5rem;"></i>
+          <p class="mt-2">Belum ada riwayat klaim aktif dari lembaga Anda.</p>
+        </div>
+      `;
+      return;
+    }
+
+    // Populate dropdown
+    selectorWrapper.style.display = 'block';
+    selector.innerHTML = '';
+    activeClaims.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.id;
+      opt.innerText = `Klaim #${c.id} - ${c.foodName} (${c.qty} Porsi) - [${c.status.toUpperCase()}]`;
+      selector.appendChild(opt);
+    });
+
+    // Render timeline for first active claim by default or current value
+    const lastClaim = activeClaims[activeClaims.length - 1];
+    selector.value = lastClaim.id;
+    renderActiveClaimTimeline(lastClaim.id);
+  }
+
+  function renderActiveClaimTimeline(claimId) {
+    const claim = claimsDB.find(c => c.id == claimId);
+    if (!claim) return;
+
+    // Fill details card
+    document.getElementById('claimDetailCard').classList.remove('d-none');
+    
+    // Map category icon
+    const iconMap = { 'makanan_berat': '🍱', 'roti': '🍞', 'snack': '🍩', 'minuman': '🧃' };
+    const icon = iconMap[claim.category] || '🍱';
+    
+    document.getElementById('detailFoodIcon').innerText = icon;
+    document.getElementById('detailFoodName').innerText = claim.foodName;
+    document.getElementById('detailFoodOrigin').innerText = `📍 ${claim.donorName} Balikpapan`;
+    document.getElementById('detailFoodQty').innerText = `🍽️ ${claim.qty} porsi`;
+    document.getElementById('detailFoodCategory').innerText = `📂 ${claim.category}`;
+    document.getElementById('detailFoodExp').innerText = `📅 Diajukan: Pukul ${claim.time}`;
+
+    // Render nodes
+    const timeline = document.getElementById('distributionTimeline');
+    timeline.innerHTML = '';
+
+    const step1Class = 'done';
+    const step2Class = 'done';
+    let step3Class = claim.status === 'pending' ? 'active' : 'done';
+    let step4Class = claim.status === 'approved' ? 'active' : '';
+
+    let statusBadge = `<span class="badge-pending-honey">Pending Approval</span>`;
+    if (claim.status === 'approved') {
+      statusBadge = `<span class="badge-verified">Disetujui Admin</span>`;
+      step4Class = 'active';
+    } else if (claim.status === 'rejected') {
+      statusBadge = `<span class="badge-status" style="background:#FDECEA; color:#C0392B;">Ditolak Admin</span>`;
+      step3Class = 'done';
+      step4Class = '';
+    }
+
+    timeline.innerHTML = `
+      <!-- Node 1 -->
+      <div class="timeline-node ${step1Class}">
+        <div class="timeline-indicator"></div>
+        <div class="timeline-node-content">
+          <h5>Makanan Surplus Terdaftar <span class="timeline-time">08:00 WITA</span></h5>
+          <p>Donatur mendaftarkan item surplus "${claim.foodName}" ke database platform.</p>
+        </div>
+      </div>
+
+      <!-- Node 2 -->
+      <div class="timeline-node ${step2Class}">
+        <div class="timeline-indicator"></div>
+        <div class="timeline-node-content">
+          <h5>Makanan Diklaim oleh Lembaga <span class="timeline-time">${claim.time}</span></h5>
+          <p>Lembaga sosial Anda mengajukan klaim sebanyak <strong>${claim.qty} porsi</strong>.</p>
+        </div>
+      </div>
+
+      <!-- Node 3 -->
+      <div class="timeline-node ${step3Class}">
+        <div class="timeline-indicator"></div>
+        <div class="timeline-node-content">
+          <h5>Menunggu Validasi Admin &amp; Persetujuan</h5>
+          <p>Status: ${statusBadge} — Verifikasi platform database dari Super Admin HQ.</p>
+        </div>
+      </div>
+
+      <!-- Node 4 -->
+      <div class="timeline-node ${step4Class}">
+        <div class="timeline-indicator"></div>
+        <div class="timeline-node-content">
+          <h5>Status Distribusi &amp; Relawan</h5>
+          <p>Metode: <strong>${claim.method.toUpperCase()}</strong> • Kurir Relawan: <strong>${claim.volunteerName}</strong> (<i class="bi bi-telephone"></i> ${claim.volunteerPhone}).</p>
+          <p class="text-muted mt-2">Catatan Kurir: <em>"${claim.notesCourier}"</em></p>
+        </div>
+      </div>
+    `;
+  }
+
+
+  // =============================================
+  // 6. ADMIN PANEL CONTROLLER (SIMULATED VALIDATION)
+  // =============================================
+  function loadAdminPanel() {
+    // 1. Stats Counter
+    const totalClaimsApproved = claimsDB.filter(c => c.status === 'approved').reduce((acc, c) => acc + c.qty, 0);
+    document.getElementById('adminStatPorsi').innerText = 247 + totalClaimsApproved;
+    
+    const totalPendingClaims = claimsDB.filter(c => c.status === 'pending').length;
+    document.getElementById('adminStatPending').innerText = totalPendingClaims;
+    document.getElementById('validationPendingBadge').innerText = `${totalPendingClaims} Menunggu Validasi`;
+    document.getElementById('sidebarPendingBadge').innerText = totalPendingClaims;
+
+    // 2. Table population
+    const validationTableBody = document.getElementById('adminValidationTable');
+    validationTableBody.innerHTML = '';
+
+    const pendingClaims = claimsDB.filter(c => c.status === 'pending');
+    if (pendingClaims.length === 0) {
+      validationTableBody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">Semua pengajuan klaim telah divalidasi.</td></tr>`;
+      return;
+    }
+
+    pendingClaims.forEach(c => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td><strong>#KL-00${c.id}</strong></td>
+        <td>
+          <strong>🍱 ${c.foodName}</strong><br>
+          <small class="text-muted">${c.donorName}</small>
+        </td>
+        <td>
+          <strong>${c.lembagaName}</strong><br>
+          <small class="text-muted">lembaga_id: ${c.lembagaId}</small>
+        </td>
+        <td>${c.qty} Porsi</td>
+        <td><span class="badge-pending-honey">Pending</span></td>
+        <td style="text-align:center">
+          <div class="action-btn-group justify-content-center">
+            <button class="btn-sage" onclick="processAdminValidationRow(${c.id}, 'approved', ${c.qty})">✓ Setujui</button>
+            <button class="btn-danger-custom" onclick="processAdminValidationRow(${c.id}, 'rejected', 0)">✗ Tolak</button>
+          </div>
+        </td>
+      `;
+      validationTableBody.appendChild(row);
+    });
+  }
+
+  function processAdminValidationRow(claimId, status, qty) {
+    const claim = claimsDB.find(c => c.id === claimId);
+    if (!claim) return;
+
+    claim.status = status;
+    if (status === 'approved') {
+      claim.notesCourier = 'Klaim disetujui admin. Relawan dalam perjalanan mengambil surplus makanan.';
+      showToast(`✅ Klaim #${claimId} berhasil disetujui!`);
+    } else {
+      claim.notesCourier = 'Klaim ditolak oleh administrator platform.';
+      
+      // Refund food stock if rejected
+      const foodItem = foodDB.find(f => f.id === claim.foodId);
+      if (foodItem) {
+        foodItem.quantity += claim.qty;
+        foodItem.status = 'available';
+      }
+      showToast(`❌ Klaim #${claimId} ditolak.`, true);
+    }
+
+    // Refresh UI
+    loadAdminPanel();
+    refreshCatalogGrid();
+    loadDonorDashboard();
+    
+    // Refresh timeline view
+    loadClaimsTimeline();
+  }
+
+
+  // =============================================
+  // 7. DONASI MODAL INTERACTION (CRUD CREATE)
+  // =============================================
+  function openInputDonasiModal() {
+    document.getElementById('donorFoodNameInput').value = '';
+    document.getElementById('donorFoodQtyInput').value = '';
+    document.getElementById('donorFoodDescriptionInput').value = '';
+    
+    // Open using BS modal (since bootstrap is loaded)
+    const modalElement = document.getElementById('inputDonasiModal');
+    const modal = new bootstrap.Modal(modalElement);
+    modal.show();
+  }
+
+  function submitDonorFood(event) {
+    event.preventDefault();
+    const name = document.getElementById('donorFoodNameInput').value.trim();
+    const qty = parseInt(document.getElementById('donorFoodQtyInput').value);
+    const unit = document.getElementById('donorFoodUnitInput').value;
+    const category = document.getElementById('donorFoodCategorySelect').value;
+    const expHours = parseInt(document.getElementById('donorFoodExpInput').value);
+    const desc = document.getElementById('donorFoodDescriptionInput').value.trim();
+
+    if (!name || isNaN(qty) || qty <= 0) {
+      showToast('⚠️ Harap isi data donasi dengan benar!', true);
+      return;
+    }
+
+    foodIdCounter++;
+    const emojiMap = { 'makanan_berat': '🍱', 'roti': '🥐', 'snack': '🍩', 'minuman': '🥤' };
+    const emoji = emojiMap[category] || '🍱';
+
+    const newItem = {
+      id: foodIdCounter,
+      name: name,
+      category: category,
+      donor: donorConfig.name,
+      quantity: qty,
+      unit: unit,
+      emoji: emoji,
+      hrsLeft: expHours,
+      status: 'available'
+    };
+    foodDB.push(newItem);
+
+    // Refresh views
+    loadDonorDashboard();
+    refreshCatalogGrid();
+    refreshLandingStock();
+
+    // Hide Modal using bootstrap
+    const modalElement = document.getElementById('inputDonasiModal');
+    const modal = bootstrap.Modal.getInstance(modalElement);
+    if (modal) modal.hide();
+
+    // Show Success banner in Mitra tab
+    const donasiAlert = document.getElementById('donasiSuccessAlert');
+    donasiAlert.style.display = 'block';
+    donasiAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => {
+      donasiAlert.style.display = 'none';
+    }, 5000);
+
+    showToast('🎉 Sukses! Makanan surplus berhasil dibagikan.');
+  }
+
+
+
+
+
+  // =============================================
+  // 9. ARTICLE CRUD OPERATIONS
+  // =============================================
+
+  // Open Article Modal (Create or Edit)
+  function openArticleModal(mode, articleId) {
+    const modal = document.getElementById('modalArticleForm');
+    const formTitle = document.getElementById('articleFormTitle');
+    const submitText = document.getElementById('articleSubmitText');
+    const editIdField = document.getElementById('articleEditId');
+
+    // Reset form
+    document.getElementById('articleForm').reset();
+    document.getElementById('articleImageLabel').innerHTML = 'Klik atau seret gambar ke area ini<br><small>Format: JPG, PNG, WebP (Maks. 2MB)</small>';
+
+    if (mode === 'create') {
+      formTitle.innerText = '📝 Tulis Artikel Baru';
+      submitText.innerText = '🚀 Terbitkan';
+      editIdField.value = '';
+    } else if (mode === 'edit' && articleId) {
+      const article = articlesDB.find(a => a.id === articleId);
+      if (article) {
+        formTitle.innerText = '✏️ Edit Artikel';
+        submitText.innerText = '💾 Simpan Perubahan';
+        editIdField.value = articleId;
+        document.getElementById('articleTitle').value = article.title;
+        document.getElementById('articleCategory').value = article.category;
+        document.getElementById('articleContent').value = article.content;
+      }
+    }
+
+    modal.classList.add('show');
+  }
+
+  // Submit Article Form
+  function submitArticleForm(event) {
+    event.preventDefault();
+
+    const editId = document.getElementById('articleEditId').value;
+    const title = document.getElementById('articleTitle').value.trim();
+    const category = document.getElementById('articleCategory').value;
+    const content = document.getElementById('articleContent').value.trim();
+
+    if (!title || !category || !content) {
+      showToast('⚠️ Mohon lengkapi semua kolom!', true);
+      return;
+    }
+
+    const categoryMap = {
+      'edukasi': { label: 'Edukasi', tagClass: 'tag-edukasi', emoji: '📚' },
+      'sosial': { label: 'Kegiatan Sosial', tagClass: 'tag-sosial', emoji: '🤝' },
+      'tips': { label: 'Tips Mitra', tagClass: 'tag-tips', emoji: '💡' }
+    };
+    const catInfo = categoryMap[category] || categoryMap['edukasi'];
+    const today = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+
+    if (editId) {
+      // UPDATE existing article
+      const article = articlesDB.find(a => a.id === parseInt(editId));
+      if (article) {
+        article.title = title;
+        article.category = category;
+        article.content = content;
+        article.snippet = content.substring(0, 120) + '...';
+      }
+      showToast('✅ Artikel berhasil diperbarui!');
+    } else {
+      // CREATE new article
+      articleIdCounter++;
+      const newArticle = {
+        id: articleIdCounter,
+        title: title,
+        category: category,
+        author: 'Admin',
+        date: today,
+        status: 'published',
+        emoji: catInfo.emoji,
+        content: content,
+        snippet: content.substring(0, 120) + '...'
+      };
+      articlesDB.push(newArticle);
+      showToast('✅ Artikel baru berhasil diterbitkan!');
+    }
+
+    // Refresh the admin table
+    refreshAdminArticleTable();
+    // Refresh the public grid
+    refreshPublicArticlesGrid();
+
+    // Close modal
+    closeModal('modalArticleForm');
+  }
+
+  // Preview Article
+  function previewArticle(articleId) {
+    const article = articlesDB.find(a => a.id === articleId);
+    if (!article) return;
+
+    const categoryMap = {
+      'edukasi': { label: 'Edukasi', tagClass: 'tag-edukasi' },
+      'sosial': { label: 'Kegiatan Sosial', tagClass: 'tag-sosial' },
+      'tips': { label: 'Tips Mitra', tagClass: 'tag-tips' }
+    };
+    const catInfo = categoryMap[article.category] || categoryMap['edukasi'];
+
+    document.getElementById('previewImg').innerText = article.emoji;
+    document.getElementById('previewTitle').innerText = article.title;
+    document.getElementById('previewContent').innerText = article.content;
+    document.getElementById('previewDate').innerText = '📅 ' + article.date;
+    document.getElementById('previewAuthor').innerText = '📝 ' + article.author;
+
+    const catTag = document.getElementById('previewCategory');
+    catTag.className = `article-category-tag ${catInfo.tagClass}`;
+    catTag.style.position = 'static';
+    catTag.innerText = catInfo.label;
+
+    document.getElementById('modalArticlePreview').classList.add('show');
+  }
+
+  // Confirm Delete Article
+  function confirmDeleteArticle(articleId) {
+    const article = articlesDB.find(a => a.id === articleId);
+    if (!article) return;
+
+    deleteTargetId = articleId;
+    document.getElementById('deleteArticleTitle').innerText = `"${article.title}"`;
+    document.getElementById('modalDeleteConfirm').classList.add('show');
+  }
+
+  // Execute Delete Article
+  function executeDeleteArticle() {
+    if (deleteTargetId === null) return;
+
+    const index = articlesDB.findIndex(a => a.id === deleteTargetId);
+    if (index !== -1) {
+      articlesDB.splice(index, 1);
+    }
+
+    refreshAdminArticleTable();
+    refreshPublicArticlesGrid();
+    closeModal('modalDeleteConfirm');
+    showToast('🗑 Artikel berhasil dihapus!');
+    deleteTargetId = null;
+  }
+
+  // Refresh Admin Article Table
+  function refreshAdminArticleTable() {
+    const tbody = document.getElementById('adminArticleBody');
+    const categoryMap = {
+      'edukasi': { label: 'Edukasi', tagClass: 'tag-edukasi' },
+      'sosial': { label: 'Kegiatan Sosial', tagClass: 'tag-sosial' },
+      'tips': { label: 'Tips Mitra', tagClass: 'tag-tips' }
+    };
+
+    tbody.innerHTML = '';
+    articlesDB.forEach((article, idx) => {
+      const catInfo = categoryMap[article.category] || categoryMap['edukasi'];
+      const row = document.createElement('tr');
+      row.setAttribute('data-article-id', article.id);
+      row.innerHTML = `
+        <td>${idx + 1}</td>
+        <td><strong>${article.title}</strong></td>
+        <td><span class="article-category-tag ${catInfo.tagClass}" style="position:static">${catInfo.label}</span></td>
+        <td>${article.author}</td>
+        <td>${article.date}</td>
+        <td><span class="badge-published">Terbit</span></td>
+        <td style="text-align:center">
+          <div class="action-btn-group justify-content-center">
+            <button class="btn-info-pastel" onclick="previewArticle(${article.id})">👁 Lihat</button>
+            <button class="btn-edit-pastel" onclick="openArticleModal('edit', ${article.id})">✏ Edit</button>
+            <button class="btn-danger-pastel" onclick="confirmDeleteArticle(${article.id})">🗑 Hapus</button>
+          </div>
+        </td>
+      `;
+      tbody.appendChild(row);
+    });
+
+    document.getElementById('totalArticleBadge').innerText = `${articlesDB.length} Artikel Aktif`;
+  }
+
+  // Refresh Public Articles Grid
+  function refreshPublicArticlesGrid() {
+    const grid = document.getElementById('publicArticlesGrid');
+    const categoryMap = {
+      'edukasi': { label: 'Edukasi', tagClass: 'tag-edukasi', imgClass: 'img-edu' },
+      'sosial': { label: 'Kegiatan Sosial', tagClass: 'tag-sosial', imgClass: 'img-social' },
+      'tips': { label: 'Tips Mitra', tagClass: 'tag-tips', imgClass: 'img-tips' }
+    };
+
+    grid.innerHTML = '';
+    articlesDB.forEach(article => {
+      const catInfo = categoryMap[article.category] || categoryMap['edukasi'];
+      const card = document.createElement('div');
+      card.className = 'article-card';
+      card.setAttribute('data-news-category', article.category);
+      card.innerHTML = `
+        <div class="article-card-img ${catInfo.imgClass}">
+          ${article.emoji}
+          <span class="article-category-tag ${catInfo.tagClass}">${catInfo.label}</span>
+        </div>
+        <div class="article-card-body">
+          <h4>${article.title}</h4>
+          <p class="article-snippet">${article.snippet}</p>
+          <div class="article-card-footer">
+            <div class="article-author">
+              <div class="article-author-avatar">A</div>
+              ${article.author}
+            </div>
+            <button class="btn-read-more" onclick="showToast('Membuka artikel lengkap...')">Baca Selengkapnya</button>
+          </div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+
+  // =============================================
+  // 10. NEWS FILTER
+  // =============================================
+  function filterNews(category, clickedBtn) {
+    // Update active pill
+    document.querySelectorAll('.news-filter-pill').forEach(p => p.classList.remove('active'));
+    if (clickedBtn) clickedBtn.classList.add('active');
+
+    // Filter cards
+    const cards = document.querySelectorAll('#publicArticlesGrid .article-card');
+    cards.forEach(card => {
+      const cardCat = card.getAttribute('data-news-category');
+      if (category === 'semua' || cardCat === category) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+
+  // =============================================
+  // 11. FILE UPLOAD HANDLER (Simulated)
+  // =============================================
+  function handleImageUpload(input) {
+    const label = document.getElementById('articleImageLabel');
+    if (input.files && input.files[0]) {
+      label.innerHTML = `✅ <strong>${input.files[0].name}</strong> siap diunggah<br><small>Klik lagi untuk mengganti</small>`;
+    }
+  }
+
+
+  // =============================================
+  // 12. MODAL UTILITIES
+  // =============================================
+  function closeModal(modalId) {
+    document.getElementById(modalId).classList.remove('show');
+  }
+
+  // Close modal on backdrop click
+  document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('modal-overlay')) {
+      e.target.classList.remove('show');
+    }
+  });
+
+  // Close modal on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal-overlay.show').forEach(m => m.classList.remove('show'));
+    }
+  });
+
+
+  // =============================================
+  // 13. TOAST NOTIFICATION
+  // =============================================
+  function showToast(message, isError = false) {
+    const toast = document.getElementById('toastNotification');
+    const icon = document.getElementById('toastIcon');
+    const text = document.getElementById('toastText');
+
+    text.innerText = message;
+    icon.innerText = isError ? '⚠️' : '✅';
+    toast.className = isError ? 'toast-notification show error' : 'toast-notification show';
+
+    // Auto-hide after 3s
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3000);
+  }
+
+  // Add event listener to form submission for input donasi
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('inputDonasiForm');
+    if (form) {
+      form.addEventListener('submit', submitDonorFood);
+    }
+    
+    // Initial loads
+    refreshCatalogGrid();
+    refreshLandingStock();
+    loadDonorDashboard();
+    loadClaimsTimeline();
+    loadAdminPanel();
+    refreshPublicArticlesGrid(); // Populate news tab from DB on init
+    refreshAdminArticleTable();  // Sync admin article table with DB on init
+  });
+</script>
+
+</body>
+</html>

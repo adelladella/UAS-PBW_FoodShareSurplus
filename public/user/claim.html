@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoodShare — Distribusi Surplus Makanan</title>
+  <meta name="description" content="Platform modern distribusi surplus makanan untuk mengurangi food waste demi aksi sosial kemanusiaan.">
+  
+  <!-- CSS Frameworks & Google Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+    <link rel="stylesheet" href="../css/concept.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+  <nav class="custom-navbar d-flex justify-content-between align-items-center">
+    <a href="#" class="brand-logo" onclick="window.location.href='../home.html'">🍞 <span>FoodShare</span></a>
+    
+    <div class="tabs-wrapper">
+      <button class="tab-trigger active" onclick="window.location.href='../home.html'">Beranda</button>
+      <button class="tab-trigger" onclick="window.location.href='../user/donor.html'">Mitra Donor</button>
+      <button class="tab-trigger" onclick="window.location.href='../user/catalog.html'">Katalog</button>
+      <button class="tab-trigger" onclick="window.location.href='../user/claim.html'">Klaim &amp; Tracking</button>
+      <button class="tab-trigger" onclick="window.location.href='../api-docs.html'">API Docs</button>
+      <button class="tab-trigger" onclick="window.location.href='../admin/dashboard.html'">Admin Panel</button>
+    </div>
+    
+    <div class="d-none d-lg-block">
+      <button class="btn-honey" onclick="window.location.href='../user/catalog.html'">Selamatkan Makanan 🥐</button>
+    </div>
+  </nav>
+
+  
+
+<!-- TAB 4: DETAIL CLAIM & DISTRIBUSI TIMELINE -->
+  <div class="page-section active" id="page-detail">
+    <div class="detail-container">
+      
+      <div class="mb-4">
+        <h2 class="fw-bold">📍 Detail Klaim &amp; Distribusi</h2>
+        <p class="text-muted">Proses pengisian klaim serta pelacakan real-time dari distribusi</p>
+      </div>
+
+      <!-- Detail Card (Filled dynamically) -->
+      <div class="detail-hero" id="claimDetailCard">
+        <div class="detail-img-box" id="detailFoodEmoji">🍱</div>
+        <div class="detail-info flex-grow-1">
+          <span class="badge-status available mb-2 d-inline-block">Tersedia</span>
+          <h2 id="detailFoodName">Nasi Box Ayam Goreng</h2>
+          <div class="detail-origin" id="detailFoodOrigin">📍 Restoran Sederhana Balikpapan • donor_id: 2</div>
+          <div class="detail-pills">
+            <span class="detail-pill" id="detailFoodQty">🍽️ 30 porsi</span>
+            <span class="detail-pill" id="detailFoodCategory">📂 makanan_berat</span>
+            <span class="detail-pill" id="detailFoodExp">⏰ Expired: 4 jam lagi</span>
+          </div>
+          <p class="detail-description">Surplus hidangan bernutrisi tinggi dari Restoran Sederhana Balikpapan. Bersih, higienis, dan dikemas rapi dalam kemasan ramah lingkungan. Sangat baik untuk langsung dikonsumsi.</p>
+        </div>
+      </div>
+
+      <!-- Warm/Caramel Claim Form -->
+      <div class="honey-form-wrapper">
+        <h3 class="fw-bold text-dark">✍️ Form Klaim Makanan Instan</h3>
+        
+        <div id="claimSuccessBox" class="alert-success-honey mb-4">
+          🎉 Sukses! Pengajuan klaim telah dikirim ke sistem. Silakan lacak statusnya pada timeline di bawah.
+        </div>
+
+        <form id="instantClaimForm" onsubmit="submitClaimForm(event)">
+          <div class="row">
+            <div class="col-md-6 honey-input-group">
+              <label>Nama Lembaga Pemohon</label>
+              <input type="text" class="honey-input" value="Panti Asuhan Harapan Bangsa (lembaga_id: 4)" readonly>
+            </div>
+            <div class="col-md-6 honey-input-group">
+              <label>Porsi yang Diambil (Maksimal Stok)</label>
+              <input type="number" class="honey-input" id="claimQtyInput" value="15" min="1" max="30" required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 honey-input-group">
+              <label>Metode Penyaluran</label>
+              <select class="honey-input" id="claimMethodSelect">
+                <option value="pickup">🚗 Pickup (Ambil Langsung ke Restoran)</option>
+                <option value="delivery" selected>🚚 Delivery (Penyaluran Relawan &amp; Kurir)</option>
+              </select>
+            </div>
+            <div class="col-md-6 honey-input-group">
+              <label>Catatan Tambahan untuk Donor &amp; Relawan</label>
+              <input type="text" class="honey-input" id="claimNotesInput" placeholder="Contoh: Kami sangat membutuhkan ini untuk makan siang panti asuhan." value="Mohon bantuan relawan untuk mengantarkan ke sekretariat Panti Asuhan Harapan Bangsa.">
+            </div>
+          </div>
+          
+          <div class="text-end mt-3">
+            <button type="submit" class="btn-honey px-5 py-3">Kirim &amp; Proses Klaim Sekarang 🚀</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Timeline tracking -->
+      <div>
+        <h4 class="timeline-title">📍 Pelacakan Distribusi Real-Time</h4>
+        <div class="timeline-wrapper" id="distributionTimeline">
+          
+          <!-- Node 1 -->
+          <div class="timeline-node done">
+            <div class="timeline-indicator"></div>
+            <div class="timeline-node-content">
+              <h5>Makanan Surplus Terdaftar <span class="timeline-time">08:00 WITA</span></h5>
+              <p>Restoran Sederhana Balikpapan memasukkan 30 porsi Nasi Box Ayam Goreng ke database surplus.</p>
+            </div>
+          </div>
+
+          <!-- Node 2 -->
+          <div class="timeline-node done">
+            <div class="timeline-indicator"></div>
+            <div class="timeline-node-content">
+              <h5>Makanan Diklaim oleh Lembaga <span class="timeline-time">09:15 WITA</span></h5>
+              <p>Yayasan Peduli Sesama telah mengajukan klaim sebanyak <strong>15 porsi</strong>.</p>
+            </div>
+          </div>
+
+          <!-- Node 3 -->
+          <div class="timeline-node active">
+            <div class="timeline-indicator"></div>
+            <div class="timeline-node-content">
+              <h5>Menunggu Validasi Admin &amp; Persetujuan <span class="timeline-time">09:20 WITA</span></h5>
+              <p>Status: <span class="badge-status" style="background:#FFF3D6; color:#E6A817;">Pending Approval</span> — Menunggu verifikasi dari administrator platform.</p>
+            </div>
+          </div>
+
+          <!-- Node 4 -->
+          <div class="timeline-node">
+            <div class="timeline-indicator"></div>
+            <div class="timeline-node-content">
+              <h5>Pengiriman Kurir Relawan Aktif <span class="timeline-time">Dalam Antrean</span></h5>
+              <p>Kurir Relawan: <strong>Budi Santoso</strong> (<i class="bi bi-telephone-fill text-warning"></i> 081299887766) akan ditugaskan mengantar surplus makanan setelah disetujui.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  
+
+  <!-- Modals -->
+  <!-- Modals from original are kept here for simplicity, but we can append them if needed -->
+
+  <script src="../js/concept.js"></script>
+</body>
+</html>

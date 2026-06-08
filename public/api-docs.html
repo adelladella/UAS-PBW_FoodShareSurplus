@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoodShare — Distribusi Surplus Makanan</title>
+  <meta name="description" content="Platform modern distribusi surplus makanan untuk mengurangi food waste demi aksi sosial kemanusiaan.">
+  
+  <!-- CSS Frameworks & Google Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+    <link rel="stylesheet" href="css/concept.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+  <nav class="custom-navbar d-flex justify-content-between align-items-center">
+    <a href="#" class="brand-logo" onclick="window.location.href='home.html'">🍞 <span>FoodShare</span></a>
+    
+    <div class="tabs-wrapper">
+      <button class="tab-trigger active" onclick="window.location.href='home.html'">Beranda</button>
+      <button class="tab-trigger" onclick="window.location.href='user/donor.html'">Mitra Donor</button>
+      <button class="tab-trigger" onclick="window.location.href='user/catalog.html'">Katalog</button>
+      <button class="tab-trigger" onclick="window.location.href='user/claim.html'">Klaim &amp; Tracking</button>
+      <button class="tab-trigger" onclick="window.location.href='api-docs.html'">API Docs</button>
+      <button class="tab-trigger" onclick="window.location.href='admin/dashboard.html'">Admin Panel</button>
+    </div>
+    
+    <div class="d-none d-lg-block">
+      <button class="btn-honey" onclick="window.location.href='user/catalog.html'">Selamatkan Makanan 🥐</button>
+    </div>
+  </nav>
+
+  
+
+<!-- TAB 5: API DOCUMENTATION -->
+  <div class="page-section active" id="page-api">
+    <div class="api-container">
+      
+      <div class="api-header-section">
+        <h2>📘 Integrasi Developer &amp; API Route</h2>
+        <p>Rest API Modern berbasis Laravel 13 untuk mempermudah integrasi data real-time dengan aplikasi mobile relawan.</p>
+      </div>
+
+      <!-- Endpoint 1 -->
+      <div class="api-card open">
+        <div class="api-accordion-header" onclick="toggleApiAccordion(this)">
+          <span class="api-badge get">GET</span>
+          <span class="api-route">/api/available-food</span>
+          <span class="api-summary">Menampilkan seluruh data surplus layak konsumsi</span>
+        </div>
+        <div class="api-body-content">
+          <p class="text-muted mt-3">Mengambil database list makanan premium berstatus <strong>available</strong> untuk ditampilkan pada landing page.</p>
+          <h6 class="fw-bold">Response JSON (200 OK)</h6>
+          <pre class="code-console"><code>{
+  <span class="key">"status"</span>: <span class="string">"success"</span>,
+  <span class="key">"count"</span>: <span class="number">3</span>,
+  <span class="key">"data"</span>: [
+    {
+      <span class="key">"id"</span>: <span class="number">1</span>,
+      <span class="key">"donor_id"</span>: <span class="number">2</span>,
+      <span class="key">"name"</span>: <span class="string">"Nasi Box Ayam Goreng"</span>,
+      <span class="key">"category"</span>: <span class="string">"makanan_berat"</span>,
+      <span class="key">"quantity"</span>: <span class="number">30</span>,
+      <span class="key">"status"</span>: <span class="string">"Available"</span>,
+      <span class="key">"expired_hours_left"</span>: <span class="number">4</span>
+    }
+  ]
+}</code></pre>
+        </div>
+      </div>
+
+      <!-- Endpoint 2 -->
+      <div class="api-card">
+        <div class="api-accordion-header" onclick="toggleApiAccordion(this)">
+          <span class="api-badge post">POST</span>
+          <span class="api-route">/api/claim-food</span>
+          <span class="api-summary">Klaim instan makanan surplus untuk lembaga</span>
+        </div>
+        <div class="api-body-content">
+          <p class="text-muted mt-3">Mengajukan transaksi peminjaman/klaim stok surplus oleh lembaga sosial resmi.</p>
+          <h6 class="fw-bold">Request Payload JSON (Header: Content-Type: application/json)</h6>
+          <pre class="code-console"><code>{
+  <span class="key">"food_id"</span>: <span class="number">1</span>,
+  <span class="key">"lembaga_id"</span>: <span class="number">4</span>,
+  <span class="key">"quantity_claimed"</span>: <span class="number">15</span>,
+  <span class="key">"method"</span>: <span class="string">"delivery"</span>,
+  <span class="key">"notes"</span>: <span class="string">"Mohon dikirimkan segera sebelum jam makan siang panti asuhan."</span>
+}</code></pre>
+          <h6 class="fw-bold mt-4">Response JSON (201 Created)</h6>
+          <pre class="code-console"><code>{
+  <span class="key">"status"</span>: <span class="string">"success"</span>,
+  <span class="key">"message"</span>: <span class="string">"Klaim makanan berhasil diajukan untuk divalidasi admin."</span>,
+  <span class="key">"claim_id"</span>: <span class="number">182</span>
+}</code></pre>
+        </div>
+      </div>
+
+      <!-- Endpoint 3 -->
+      <div class="api-card">
+        <div class="api-accordion-header" onclick="toggleApiAccordion(this)">
+          <span class="api-badge put">PUT</span>
+          <span class="api-route">/api/update-status/{id}</span>
+          <span class="api-summary">Update status tracking &amp; kurir relawan</span>
+        </div>
+        <div class="api-body-content">
+          <p class="text-muted mt-3">Digunakan oleh aplikasi kurir relawan untuk memperbarui posisi &amp; status distribusi.</p>
+          <h6 class="fw-bold">Request Payload JSON</h6>
+          <pre class="code-console"><code>{
+  <span class="key">"status"</span>: <span class="string">"in_delivery"</span>,
+  <span class="key">"courier_name"</span>: <span class="string">"Budi Santoso"</span>,
+  <span class="key">"courier_phone"</span>: <span class="string">"081299887766"</span>
+}</code></pre>
+          <h6 class="fw-bold mt-4">Response JSON (200 OK)</h6>
+          <pre class="code-console"><code>{
+  <span class="key">"status"</span>: <span class="string">"success"</span>,
+  <span class="key">"message"</span>: <span class="string">"Status pengiriman kurir Budi Santoso sukses diperbarui."</span>
+}</code></pre>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  
+
+  <!-- Modals -->
+  <!-- Modals from original are kept here for simplicity, but we can append them if needed -->
+
+  <script src="js/concept.js"></script>
+</body>
+</html>
