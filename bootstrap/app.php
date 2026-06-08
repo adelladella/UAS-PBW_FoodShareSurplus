@@ -51,7 +51,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
-return Application::configure(basePath: dirname(__DIR__))
+$app = Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
         commands: __DIR__.'/../routes/console.php',
@@ -227,3 +227,22 @@ HTML;
             exit;
         });
     })->create();
+
+// Neon Database SNI support for older postgres client libraries (libpq)
+$app->afterLoadingEnvironment(function () {
+    $dbHost = env('DB_HOST', env('POSTGRES_HOST'));
+    if (is_string($dbHost) && strpos($dbHost, 'neon.tech') !== false) {
+        $parts = explode('.', $dbHost);
+        $endpointId = $parts[0];
+        
+        $sslMode = env('DB_SSLMODE', 'require');
+        if (strpos($sslMode, 'options=') === false) {
+            $newSslMode = "{$sslMode};options='endpoint={$endpointId}'";
+            $_ENV['DB_SSLMODE'] = $newSslMode;
+            $_SERVER['DB_SSLMODE'] = $newSslMode;
+            putenv("DB_SSLMODE={$newSslMode}");
+        }
+    }
+});
+
+return $app;
