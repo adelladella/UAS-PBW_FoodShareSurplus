@@ -192,7 +192,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
       </div>
       <div class="mb-4">
         <h6 class="fw-bold text-dark mb-2">Database Connection Configuration (pgsql):</h6>
-        <pre class="p-3 bg-light rounded-3 border font-monospace text-muted" style="font-size: 0.85rem; white-space: pre-wrap;">{$configHtml}</pre>
+        <pre id="dbConfigText" class="p-3 bg-light rounded-3 border font-monospace text-muted" style="font-size: 0.85rem; white-space: pre-wrap;">{$configHtml}</pre>
       </div>
       <div class="mb-4">
         <h6 class="fw-bold text-dark mb-2">Catatan Log Stack Trace:</h6>
@@ -216,9 +216,10 @@ $app = Application::configure(basePath: dirname(__DIR__))
   <script>
     function copyStackTrace() {
       const logText = document.getElementById('stackTraceText').innerText;
+      const dbConfigText = document.getElementById('dbConfigText') ? document.getElementById('dbConfigText').innerText : 'None';
       const errorMsg = "{$msg}";
       const fileInfo = "{$file} : {$line}";
-      const fullLog = "=== FOODSHARE BOOT ERROR LOG ===\\nMessage: " + errorMsg + "\\nFile: " + fileInfo + "\\n\\nStack Trace:\\n" + logText;
+      const fullLog = "=== FOODSHARE BOOT ERROR LOG ===\\nMessage: " + errorMsg + "\\nFile: " + fileInfo + "\\n\\nDatabase Config:\\n" + dbConfigText + "\\n\\nStack Trace:\\n" + logText;
       navigator.clipboard.writeText(fullLog).then(() => {
         alert('Log kesalahan berhasil disalin ke papan klip (clipboard)!');
       }).catch(err => {

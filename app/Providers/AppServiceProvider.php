@@ -45,16 +45,21 @@ class AppServiceProvider extends ServiceProvider
                     }
                 }
                 
-                // 2. Inject endpoint ID options with single quote format for PDO compatibility
+                // 2. Inject endpoint ID options into password field for SNI compatibility
                 $host = $config['host'] ?? '';
                 if (is_string($host) && strpos($host, 'neon.tech') !== false) {
                     $parts = explode('.', $host);
                     $endpointId = $parts[0];
                     
-                    $sslMode = $config['sslmode'] ?? 'require';
-                    $sslMode = explode(';', $sslMode)[0]; // Remove any previously appended options
+                    // Reset sslmode to base mode (remove any previously appended options)
+                    if (isset($config['sslmode'])) {
+                        $config['sslmode'] = explode(';', $config['sslmode'])[0];
+                    }
                     
-                    $config['sslmode'] = "{$sslMode};options='endpoint={$endpointId}'";
+                    // Prefix the password with the endpoint ID using the dollar sign separator
+                    if (isset($config['password']) && strpos($config['password'], 'endpoint=') === false) {
+                        $config['password'] = "endpoint={$endpointId}\${$config['password']}";
+                    }
                     
                     $this->app['config']->set("database.connections.{$name}", $config);
                 }
