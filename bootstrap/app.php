@@ -229,18 +229,28 @@ HTML;
     })->create();
 
 // Neon Database SNI support for older postgres client libraries (libpq)
-$app->afterLoadingEnvironment(function () {
-    $dbHost = env('DB_HOST', env('POSTGRES_HOST'));
-    if (is_string($dbHost) && strpos($dbHost, 'neon.tech') !== false) {
-        $parts = explode('.', $dbHost);
-        $endpointId = $parts[0];
-        
-        $sslMode = env('DB_SSLMODE', 'require');
-        if (strpos($sslMode, 'options=') === false) {
-            $newSslMode = "{$sslMode};options='endpoint={$endpointId}'";
-            $_ENV['DB_SSLMODE'] = $newSslMode;
-            $_SERVER['DB_SSLMODE'] = $newSslMode;
-            putenv("DB_SSLMODE={$newSslMode}");
+$app->booting(function () use ($app) {
+    $connections = $app['config']->get('database.connections', []);
+    foreach ($connections as $name => $config) {
+        if ($config && isset($config['driver']) && $config['driver'] === 'pgsql') {
+            if (!empty($config['url'])) {
+                if (class_exists(\Illuminate\Database\ConfigurationUrlParser::class)) {
+                    $config = (new \Illuminate\Database\ConfigurationUrlParser)->parseConfiguration($config);
+                }
+            }
+            
+            $host = $config['host'] ?? '';
+            if (is_string($host) && strpos($host, 'neon.tech') !== false) {
+                $parts = explode('.', $host);
+                $endpointId = $parts[0];
+                
+                $sslMode = $config['sslmode'] ?? 'require';
+                if (strpos($sslMode, 'options=') === false) {
+                    $config['sslmode'] = "{$sslMode};options='endpoint={$endpointId}'";
+                }
+                
+                $app['config']->set("database.connections.{$name}", $config);
+            }
         }
     }
 });
