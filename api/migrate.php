@@ -23,6 +23,25 @@ if (($_GET['key'] ?? '') !== 'foodshare-migrate-2026') {
     exit;
 }
 
+// Bypass Neon PgBouncer Pooler khusus untuk proses migrasi ini
+// Mengubah host dari '...-pooler.c-8...' menjadi '....c-8...'
+$currentHost = config('database.connections.pgsql.host');
+if (strpos($currentHost, '-pooler') !== false) {
+    $directHost = str_replace('-pooler', '', $currentHost);
+    config(['database.connections.pgsql.host' => $directHost]);
+}
+
+// Jika menggunakan DB_URL, kita juga perlu membersihkannya
+$currentUrl = config('database.connections.pgsql.url');
+if ($currentUrl && strpos($currentUrl, '-pooler') !== false) {
+    $directUrl = str_replace('-pooler', '', $currentUrl);
+    config(['database.connections.pgsql.url' => $directUrl]);
+}
+
+// Bersihkan koneksi yang sudah terbuka agar config baru dipakai
+\Illuminate\Support\Facades\DB::purge('pgsql');
+\Illuminate\Support\Facades\DB::reconnect('pgsql');
+
 try {
     // Gunakan migrate:fresh karena mungkin ada tabel yang terbuat setengah dari percobaan sebelumnya
     \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--force' => true]);
