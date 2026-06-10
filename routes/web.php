@@ -69,13 +69,16 @@ Route::get('/api/available-food', function () {
 // ============================================================
 // TEMPORARY DEBUG ROUTE
 // ============================================================
-Route::get('/api/debug-users', function() {
+$debugLogic = function() {
     $users = DB::table('users')->select('id', 'name', 'email', 'password')->get();
     return response()->json([
         'count' => $users->count(),
-        'users' => $users
+        'users' => $users,
+        'test_hash_check' => Hash::check('password', $users->first()->password ?? '')
     ]);
-});
+};
+Route::get('/api/debug-users', $debugLogic);
+Route::get('/debug-users', $debugLogic);
 
 // GET DONOR'S FOOD (Donor Dashboard - Read)
 Route::get('/api/donor-food/{donor_id}', function ($donor_id) {
