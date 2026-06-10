@@ -4,9 +4,6 @@
     "functions": {
         "api/index.php": {
             "runtime": "vercel-php@0.9.0"
-        },
-        "api/migrate.php": {
-            "runtime": "vercel-php@0.9.0"
         }
     },
     "routes": [
@@ -25,10 +22,6 @@
         {
             "src": "/hero_food.png",
             "dest": "/public/hero_food.png"
-        },
-        {
-            "src": "/run-migrate",
-            "dest": "api/migrate.php"
         },
         {
             "src": "/(.*)",

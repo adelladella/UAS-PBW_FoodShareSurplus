@@ -976,31 +976,3 @@ Route::post('/api/admin/logs/clear', function () {
     file_put_contents($logPath, '');
     return response()->json(['status' => 'success']);
 });
-
-// ============================================================
-// TEMPORARY: Route untuk menjalankan migration di production
-// HAPUS ROUTE INI SETELAH MIGRATION BERHASIL!
-// Akses: /run-migrate?key=foodshare-migrate-2026
-// ============================================================
-Route::get('/run-migrate', function (Request $request) {
-    // Proteksi sederhana dengan secret key
-    if ($request->query('key') !== 'foodshare-migrate-2026') {
-        abort(403, 'Unauthorized.');
-    }
-
-    try {
-        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
-        $output = \Illuminate\Support\Facades\Artisan::output();
-        
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Migration berhasil dijalankan!',
-            'output' => $output
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => $e->getMessage()
-        ], 500);
-    }
-});
