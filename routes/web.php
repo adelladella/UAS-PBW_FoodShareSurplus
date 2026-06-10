@@ -49,7 +49,7 @@ Route::post('/api/login', function (Request $request) {
 
     return response()->json([
         'status' => 'error',
-        'message' => 'Email atau kata sandi salah. Pastikan kredensial Anda benar.'
+        'message' => 'Email/Sandi Salah. [DEBUG: Email=' . ($email ?? 'NULL') . ', PassLen=' . strlen((string)$password) . ', Found=' . ($user ? 'Yes' : 'No') . ', RawBody=' . $request->getContent() . ']'
     ], 401);
 });
 
