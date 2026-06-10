@@ -66,6 +66,17 @@ Route::get('/api/available-food', function () {
     return response()->json($food);
 });
 
+// ============================================================
+// TEMPORARY DEBUG ROUTE
+// ============================================================
+Route::get('/api/debug-users', function() {
+    $users = DB::table('users')->select('id', 'name', 'email', 'password')->get();
+    return response()->json([
+        'count' => $users->count(),
+        'users' => $users
+    ]);
+});
+
 // GET DONOR'S FOOD (Donor Dashboard - Read)
 Route::get('/api/donor-food/{donor_id}', function ($donor_id) {
     $food = DB::table('food_items')
