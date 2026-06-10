@@ -976,30 +976,3 @@ Route::post('/api/admin/logs/clear', function () {
     file_put_contents($logPath, '');
     return response()->json(['status' => 'success']);
 });
-
-// ============================================================
-// TEMPORARY: Route untuk menjalankan Seeder di production
-// HAPUS ROUTE INI SETELAH SEEDING BERHASIL!
-// Akses: /run-seed?key=foodshare-seed-2026
-// ============================================================
-Route::get('/run-seed', function (Request $request) {
-    if ($request->query('key') !== 'foodshare-seed-2026') {
-        abort(403, 'Unauthorized.');
-    }
-
-    try {
-        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
-        $output = \Illuminate\Support\Facades\Artisan::output();
-        
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Database berhasil di-seed!',
-            'output' => $output
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => $e->getMessage()
-        ], 500);
-    }
-});
