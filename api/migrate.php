@@ -24,12 +24,13 @@ if (($_GET['key'] ?? '') !== 'foodshare-migrate-2026') {
 }
 
 try {
-    \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+    // Gunakan migrate:fresh karena mungkin ada tabel yang terbuat setengah dari percobaan sebelumnya
+    \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--force' => true]);
     $output = \Illuminate\Support\Facades\Artisan::output();
     
     echo json_encode([
         'status' => 'success',
-        'message' => 'Migration berhasil dijalankan!',
+        'message' => 'Migration fresh berhasil dijalankan! Semua tabel sudah dibuat.',
         'output' => $output
     ], JSON_PRETTY_PRINT);
 } catch (\Exception $e) {
