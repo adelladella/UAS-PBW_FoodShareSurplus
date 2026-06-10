@@ -23,19 +23,21 @@ if (($_GET['key'] ?? '') !== 'foodshare-migrate-2026') {
     exit;
 }
 
-// Bypass Neon PgBouncer Pooler khusus untuk proses migrasi ini
-// Mengubah host dari '...-pooler.c-8...' menjadi '....c-8...'
+// Mengaktifkan Emulated Prepares. Ini adalah KUNCI untuk memperbaiki
+// error PgBouncer 'current transaction is aborted' di Neon PostgreSQL.
+$options = config('database.connections.pgsql.options', []);
+$options[PDO::ATTR_EMULATE_PREPARES] = true;
+config(['database.connections.pgsql.options' => $options]);
+
+// Bypass Neon PgBouncer Pooler
 $currentHost = config('database.connections.pgsql.host');
-if (strpos($currentHost, '-pooler') !== false) {
-    $directHost = str_replace('-pooler', '', $currentHost);
-    config(['database.connections.pgsql.host' => $directHost]);
+if ($currentHost && strpos($currentHost, '-pooler') !== false) {
+    config(['database.connections.pgsql.host' => str_replace('-pooler', '', $currentHost)]);
 }
 
-// Jika menggunakan DB_URL, kita juga perlu membersihkannya
 $currentUrl = config('database.connections.pgsql.url');
 if ($currentUrl && strpos($currentUrl, '-pooler') !== false) {
-    $directUrl = str_replace('-pooler', '', $currentUrl);
-    config(['database.connections.pgsql.url' => $directUrl]);
+    config(['database.connections.pgsql.url' => str_replace('-pooler', '', $currentUrl)]);
 }
 
 // Bersihkan koneksi yang sudah terbuka agar config baru dipakai
@@ -43,13 +45,25 @@ if ($currentUrl && strpos($currentUrl, '-pooler') !== false) {
 \Illuminate\Support\Facades\DB::reconnect('pgsql');
 
 try {
-    // Gunakan migrate:fresh karena mungkin ada tabel yang terbuat setengah dari percobaan sebelumnya
-    \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--force' => true]);
+    // 1. Drop semua tabel secara manual dengan CASCADE untuk menghindari error migrate:fresh
+    $tables = [
+        'distributions', 'claims', 'food_items', 'registration_requests', 'articles',
+        'sessions', 'password_reset_tokens', 'users', 
+        'cache', 'cache_locks', 'jobs', 'job_batches', 'failed_jobs', 
+        'migrations'
+    ];
+    
+    foreach ($tables as $table) {
+        \Illuminate\Support\Facades\DB::statement("DROP TABLE IF EXISTS \"$table\" CASCADE");
+    }
+
+    // 2. Jalankan migrate biasa (bukan fresh karena tabel sudah kita drop manual)
+    \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
     $output = \Illuminate\Support\Facades\Artisan::output();
     
     echo json_encode([
         'status' => 'success',
-        'message' => 'Migration fresh berhasil dijalankan! Semua tabel sudah dibuat.',
+        'message' => 'Tabel berhasil dihapus manual dan di-migrate ulang dengan Emulated Prepares!',
         'output' => $output
     ], JSON_PRETTY_PRINT);
 } catch (\Exception $e) {
