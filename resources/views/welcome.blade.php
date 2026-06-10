@@ -3338,12 +3338,14 @@
       })
       .then(async res => {
         if (!res.ok) {
+          let errMsg = 'Email atau kata sandi salah. Silakan periksa kembali kredensial Anda.';
           try {
             const errData = await res.json();
-            throw new Error(errData.message || 'Email atau kata sandi salah.');
+            if (errData.message) errMsg = errData.message;
           } catch (e) {
-            throw new Error('Email atau kata sandi salah. Silakan periksa kembali kredensial Anda.');
+            // keep default
           }
+          throw new Error(errMsg);
         }
         return res.json();
       })

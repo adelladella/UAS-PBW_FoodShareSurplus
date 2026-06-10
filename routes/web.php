@@ -14,6 +14,15 @@ Route::post('/api/login', function (Request $request) {
     $email = $request->input('email');
     $password = $request->input('password');
 
+    // Fallback for Vercel serverless environment if payload is not parsed
+    if (!$email && $request->getContent()) {
+        $payload = json_decode($request->getContent(), true);
+        if (is_array($payload)) {
+            $email = $payload['email'] ?? null;
+            $password = $payload['password'] ?? null;
+        }
+    }
+
     // 1. Coba cari user secara langsung menggunakan email terdaftar (email resmi @foodshare.id)
     $user = DB::table('users')->where('email', $email)->first();
 
